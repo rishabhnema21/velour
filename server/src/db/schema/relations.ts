@@ -1,0 +1,46 @@
+import { relations } from "drizzle-orm";
+import { userBooks } from "./userBooks.js";
+import { shelves } from "./shelves.js";
+import { users } from "./user.js";
+import { books } from "./books.js";
+import { shelfBooks } from "./shelf_books.js";
+
+export const userRelations = relations(users, ({many}) => ({
+    userBooks: many(userBooks),
+    shelves: many(shelves),
+}));
+
+export const booksRelations = relations(books, ({many}) => ({
+    userBooks: many(userBooks),
+}));
+
+export const userBookRelations = relations(userBooks, ({one, many}) => ({
+    user: one(users, {
+        fields: [userBooks.bookId],
+        references: [users.id],
+    }),
+    book: one(books, {
+        fields: [userBooks.bookId],
+        references: [books.id],
+    }),
+    shelfBooks: many(shelfBooks),
+}));
+
+export const shelvesRelations = relations(shelves, ({one, many}) => ({
+    user: one(users, {
+        fields: [shelves.userId],
+        references: [users.id],
+    }),
+    shelfBooks: many(shelfBooks),
+}));
+
+export const shelfBooksRelations = relations(shelfBooks, ({one}) => ({
+    shelf: one(shelves, {
+        fields: [shelfBooks.shelfId],
+        references: [shelves.id],
+    }),
+    userBook: one(userBooks, {
+        fields: [shelfBooks.userBookId],
+        references: [userBooks.id],
+    }),
+}));
