@@ -3,6 +3,8 @@
 /client/node_modules
 /server/node_modules
 
+devjournal.md
+
 # Environment variables and secrets
 .env
 # optional: specify a path if your .env file is in a subdirectory, e.g., /server/.env

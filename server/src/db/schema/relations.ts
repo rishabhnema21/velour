@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
-import { userBooks } from "./userBooks.js";
-import { shelves } from "./shelves.js";
-import { users } from "./user.js";
-import { books } from "./books.js";
-import { shelfBooks } from "./shelf_books.js";
+import { userBooks } from "./userBooks";
+import { shelves } from "./shelves";
+import { users } from "./user";
+import { books } from "./books";
+import { shelfBooks } from "./shelf_books";
 
 export const userRelations = relations(users, ({many}) => ({
     userBooks: many(userBooks),

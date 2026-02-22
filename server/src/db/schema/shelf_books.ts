@@ -1,6 +1,6 @@
 import { pgTable, text, date, uuid, timestamp, integer, boolean, uniqueIndex } from "drizzle-orm/pg-core"
-import { shelves } from "./shelves.js"
-import { userBooks } from "./userBooks.js"
+import { shelves } from "./shelves"
+import { userBooks } from "./userBooks"
 
 export const shelfBooks = pgTable("shelf_books", {
     id: uuid("id").defaultRandom().primaryKey(),
