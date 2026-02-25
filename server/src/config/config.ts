@@ -8,6 +8,7 @@ interface Config {
     clerkPublishableKey: string;
     clerkSecretKey: string;
     clerkWebhookSecret: string;
+    googleBooksApiKey?: string;
 }
 
 const config: Config = {
@@ -17,6 +18,7 @@ const config: Config = {
     clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY as string,
     clerkSecretKey: process.env.CLERK_SECRET_KEY as string,
     clerkWebhookSecret: process.env.CLERK_WEBHOOK_SECRET as string,
+    googleBooksApiKey: process.env.GOOGLE_BOOKS_API_KEY,
 }
 
 export default config;

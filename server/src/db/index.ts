@@ -1,21 +1,19 @@
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/node-postgres";
-import config from "../config/config.js";
-import { Pool } from "pg";
-import * as schema from "./schema/index.js";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import config from "../config/config";
+import * as schema from "./schema/index";
 
 if (!config.dbUrl) {
-    throw new Error("DB_URL is not set in env");
+  throw new Error("DB_URL is not set in env");
 }
 
-const pool = new Pool({connectionString: config.dbUrl});
+console.log("DB URL: ", config.dbUrl);
 
-pool.on("connect", () => {
-    console.log("Database connected successfully");
-})
+console.log("Connecting to database...");
 
-pool.on("error", (err) => {
-    console.log("Database connection error: ",err);
-})
+const sql = neon(config.dbUrl);
 
-export const db = drizzle(pool, {schema});
+export const db = drizzle(sql, { schema });
+
+console.log("Database connected successfully");

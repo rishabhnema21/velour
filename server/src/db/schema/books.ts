@@ -1,4 +1,4 @@
-import { pgTable, text, date, uuid, timestamp, integer, boolean, uniqueIndex } from "drizzle-orm/pg-core"
+import { pgTable, text, uuid, timestamp, integer, boolean, uniqueIndex } from "drizzle-orm/pg-core"
 
 export const books = pgTable("books", {
     id: uuid("id").defaultRandom().primaryKey(),
@@ -6,7 +6,6 @@ export const books = pgTable("books", {
     title: text("title").notNull(),
     authors: text("authors").notNull().array(),
     publisher: text("publisher"),
-    publishedDate: date("published_date"),
     description: text("description"),
     pageCount: integer("page_count"),   
     categories: text("categories").array(),
