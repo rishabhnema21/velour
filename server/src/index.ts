@@ -6,11 +6,15 @@ import authRoutes from "./routes/authRoutes";
 import bookRoutes from "./routes/book.routes";
 
 const app = express();
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+}))
 
+app.use(clerkMiddleware());
 app.use("/api/webhooks", authRoutes);
 app.use(express.json());
 app.use("/api/books", bookRoutes);
-app.use(clerkMiddleware());
 
 app.get("/", (req, res) => {
     res.send("App is running");
