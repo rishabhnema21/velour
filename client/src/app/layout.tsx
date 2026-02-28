@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Urbanist } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -14,10 +14,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const urbanist = Urbanist({
+  variable: "--font-urbanist",
   subsets: ['latin'],
-  weight: ['100', '200', '300' ,'400', '500', '600', '700'],
   style: ['normal', 'italic'],
 });
 
@@ -35,9 +34,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
       >
-        <main className="relative">
+        <main className="relative selection:bg-[#3f3f3f] selection:text-[#ededed]">
           <header className="absolute z-50 w-full flex justify-center items-center">
             <Navigation />
           </header>

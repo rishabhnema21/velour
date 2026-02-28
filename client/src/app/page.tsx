@@ -3,7 +3,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div>
+    <div className='bg-[#d0dfdf] min-h-screen'>
       <Hero />
     </div>
   )
