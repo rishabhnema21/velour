@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { ilike, or } from "drizzle-orm";
+import { eq, ilike, or } from "drizzle-orm";
 import { books } from "../db/schema";
 import { searchInGoogleBooks } from "../services/googleBooks";
 
@@ -17,19 +17,16 @@ export const getBooks = async (req: Request, res: Response) => {
     // Search for books in the database based on the query
 
     const searchCondition = or(
-  ilike(books.title, `%${query}%`),
-  ilike(books.description, `%${query}%`)
-);
+      ilike(books.title, `%${query}%`),
+      ilike(books.description, `%${query}%`),
+    );
 
-console.log("searching books in db");
+    console.log("searching books in db");
 
-    const existingBooks = await db
-      .select()
-      .from(books)
-      .where(searchCondition);
+    const existingBooks = await db.select().from(books).where(searchCondition);
 
     if (existingBooks.length > 0) {
-        console.log("Books found in DB: ", existingBooks);
+      console.log("Books found in DB: ", existingBooks);
       return res.json(existingBooks);
     }
 
@@ -48,11 +45,16 @@ console.log("searching books in db");
     });
 
     if (!filteredResult || filteredResult.length === 0) {
-      return res.status(404).json({message: "No Books Found"});
+      return res.status(404).json({ message: "No Books Found" });
     }
 
-    console.log("google books api search completed, this is result: ", googleSearchResult);
-    console.log("mapping google books api result to our db schema and inserting into db if not exists");
+    console.log(
+      "google books api search completed, this is result: ",
+      googleSearchResult,
+    );
+    console.log(
+      "mapping google books api result to our db schema and inserting into db if not exists",
+    );
     // Map Google Books API response to our database schema
 
     const booksToInsert = filteredResult.map((item: any) => ({
@@ -82,16 +84,15 @@ console.log("searching books in db");
       .values(booksToInsert)
       .onConflictDoNothing({ target: books.googleBooksId });
 
-      console.log("books inserted to db, fetching the inserted records to return to client");
+    console.log(
+      "books inserted to db, fetching the inserted records to return to client",
+    );
 
     //   Fetch the books again to get the inserted records with their generated IDs. This ensures we return the complete book data, including the database-generated ID, to the client.
 
-    const resultedBooks = await db
-      .select()
-      .from(books)
-      .where(searchCondition);
+    const resultedBooks = await db.select().from(books).where(searchCondition);
 
-      console.log("resulted books: ", resultedBooks);
+    console.log("resulted books: ", resultedBooks);
 
     return res.status(200).json({
       message: "Books fetched and stored successfully",
@@ -100,5 +101,26 @@ console.log("searching books in db");
   } catch (err) {
     console.log("Error fetching books: ", err);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getOneBook = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+      return res.status(400).json({ message: "Invalid book id" });
+    }
+
+    const book = await db.select().from(books).where(eq(books.id, id)).limit(1);
+
+    if (!book || book.length === 0) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    return res.status(200).json({ success: true, book: book[0] });
+  } catch (err) {
+    console.log("Error fetching book: ", err);
+    return res.status(500).json({ message: "Internal Server error" });
   }
 };
