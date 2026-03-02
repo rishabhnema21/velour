@@ -16,7 +16,7 @@ export const booksRelations = relations(books, ({many}) => ({
 
 export const userBookRelations = relations(userBooks, ({one, many}) => ({
     user: one(users, {
-        fields: [userBooks.bookId],
+        fields: [userBooks.userId],
         references: [users.id],
     }),
     book: one(books, {
