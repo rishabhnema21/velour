@@ -119,3 +119,23 @@ export const addToLibrary = async (req: Request, res: Response) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+// get all books in the user's library
+
+export const getLibraryBooks = async (req: Request, res: Response) => {
+  try {
+    const user = req.User;
+    console.log(user?.id);
+    const library = await db.query.userBooks.findMany({
+      where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
+      with: {
+        book: true,
+      },
+    });
+
+    return res.status(200).json({ success: true, data: library });
+  } catch (err) {
+    console.log("Error in getting library books: ", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
