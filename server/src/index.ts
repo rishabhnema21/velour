@@ -5,6 +5,7 @@ import { clerkMiddleware } from "@clerk/express";
 import authRoutes from "./routes/authRoutes";
 import bookRoutes from "./routes/book.routes";
 import libraryRoutes from "./routes/library.route";
+import shelvesRoutes from "./routes/shelves.route";
 
 const app = express();
 app.use(cors({
@@ -21,6 +22,8 @@ app.use("/api/webhooks", authRoutes);
 app.use(express.json());
 app.use("/api/books", bookRoutes);
 app.use("/api/library", libraryRoutes);
+app.use("/api/shelves", shelvesRoutes);
+
 
 app.listen(config.port, () => {
     console.log("App is running in port : ",config.port);
