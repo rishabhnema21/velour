@@ -1,6 +1,8 @@
 import { Request, Response, RequestHandler } from "express";
 import { db } from "../db";
 import type { ShelfParams } from "../types/params";
+import { shelves } from "../db/schema";
+import { and, eq } from "drizzle-orm";
 
 export const getShelves = async (req: Request, res: Response) => {
   try {
@@ -46,10 +48,7 @@ export const getShelves = async (req: Request, res: Response) => {
 
 // get all books of an individual book shelf of the user.
 
-export const getShelfBooks: RequestHandler<ShelfParams> = async (
-  req,
-  res,
-) => {
+export const getShelfBooks: RequestHandler<ShelfParams> = async (req, res) => {
   const user = req.User;
   const { shelfId } = req.params;
   if (!shelfId) {
@@ -87,5 +86,83 @@ export const getShelfBooks: RequestHandler<ShelfParams> = async (
     return res
       .status(500)
       .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+// create custom shelves
+export const createCustomShelves = async (req: Request, res: Response) => {
+  const user = req.User;
+  try {
+    const name = req.body.name?.trim();
+
+    if (!name || name.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Shelf name must be at least 2 characters",
+      });
+    }
+
+    const newShelf = await db
+      .insert(shelves)
+      .values({
+        name,
+        userId: user.id,
+      })
+      .returning();
+    return res.status(201).json({
+      success: true,
+      data: newShelf[0],
+      message: "Shelf Created Successfully!",
+    });
+  } catch (err) {
+    console.log("Error creating shelf: ", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+// rename custom shelves
+export const renameShelf = async (req: Request, res: Response) => {
+  const user = req.User;
+  try {
+    const { shelfId } = req.params;
+    const name = req.body.name?.trim();
+
+    if (!shelfId) {
+      console.log("Shelf not found");
+      return res
+        .status(404)
+        .json({ success: false, message: "Shelf Not Found" });
+    }
+
+    if (!name || name.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Shelf name must be atleast 2 characters",
+      });
+    }
+
+    const shelf = await db.query.shelves.findFirst({
+      where: (shelves, { eq, and }) => and(eq(shelves.id, shelfId), eq(shelves.userId, user.id)),
+    });
+
+    if (!shelf) {
+      return res.status(404).json({
+        success: false,
+        message: "Shelf Not Found",
+      })
+    };
+
+    if (shelf.isSystem) {
+      return res.status(400).json({success: false, message: "Default Shelves could not be renamed"});
+    };
+
+    const updatedShelf = await db.update(shelves).set({name}).where(eq(shelves.id, shelfId)).returning();
+
+    return res.status(200).json({success: true, data: updatedShelf[0], message: "Shelf Renamed Successfully"});
+  } catch (err) {
+    console.log("Error Renaming Shelf: ", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
