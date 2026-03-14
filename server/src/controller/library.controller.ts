@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../db";
 import { books, shelfBooks, shelves, userBooks, users } from "../db/schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 export const addToLibrary = async (req: Request, res: Response) => {
   try {
@@ -136,6 +136,71 @@ export const getLibraryBooks = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, data: library });
   } catch (err) {
     console.log("Error in getting library books: ", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+// moving books between shelves
+export const updateBookShelf = async (req: Request, res: Response) => {
+  try {
+    const user = req.User;
+    const { userBookId } = req.params;
+    const { shelfId } = req.body;
+
+    if (!userBookId || !shelfId) {
+      return res.status(400).json({
+        success: false,
+        message: "UserBook ID and Shelf ID are required",
+      });
+    }
+
+    // checking if the shelf belongs to the user
+    const shelf = await db.query.shelves.findFirst({
+      where: (shelves, { eq, and }) =>
+        and(eq(shelves.id, shelfId), eq(shelves.userId, user.id)),
+    });
+
+    if (!shelf) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Shelf Not Found" });
+    }
+
+    if (shelf.isSystem) {
+      const systemShelves = await db
+        .select({ id: shelves.id })
+        .from(shelves)
+        .where(and(eq(shelves.userId, user.id), eq(shelves.isSystem, true)));
+
+      const systemShelfIds = systemShelves.map((s) => s.id);
+
+      if (systemShelfIds.length > 0) {
+        await db
+          .delete(shelfBooks)
+          .where(
+            and(
+              eq(shelfBooks.userBookId, userBookId),
+              inArray(shelfBooks.shelfId, systemShelfIds),
+            ),
+          );
+      }
+    }
+
+    await db
+      .insert(shelfBooks)
+      .values({ shelfId, userBookId })
+      .onConflictDoNothing();
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: shelf.isSystem
+          ? "Books moved to system shelf successfully"
+          : "Book added to shelf",
+      });
+  } catch (err) {
+    console.log("Error in moving books between shelves: ", err);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
