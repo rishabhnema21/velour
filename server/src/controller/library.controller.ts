@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { db } from "../db";
 import { books, shelfBooks, shelves, userBooks, users } from "../db/schema";
 import { and, eq, inArray } from "drizzle-orm";
+import type { UserBookParams } from "../types/params";
 
 export const addToLibrary = async (req: Request, res: Response) => {
   try {
     // extracting user's clerk id and book id from the request body
     const { bookId } = req.body;
-    const clerkId: string | undefined = req.auth().userId;
+    const auth = req.auth();
+    const clerkId = "userId" in auth ? auth.userId : null;
     if (!clerkId) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
@@ -141,7 +143,10 @@ export const getLibraryBooks = async (req: Request, res: Response) => {
 };
 
 // moving books between shelves
-export const updateBookShelf = async (req: Request, res: Response) => {
+export const updateBookShelf: RequestHandler<UserBookParams> = async (
+  req,
+  res,
+) => {
   try {
     const user = req.User;
     const { userBookId } = req.params;
@@ -191,16 +196,58 @@ export const updateBookShelf = async (req: Request, res: Response) => {
       .values({ shelfId, userBookId })
       .onConflictDoNothing();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: shelf.isSystem
-          ? "Books moved to system shelf successfully"
-          : "Book added to shelf",
-      });
+    return res.status(200).json({
+      success: true,
+      message: shelf.isSystem
+        ? "Books moved to system shelf successfully"
+        : "Book added to shelf",
+    });
   } catch (err) {
     console.log("Error in moving books between shelves: ", err);
     res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+// removing book from library
+export const removeFromLibrary: RequestHandler<UserBookParams> = async (
+  req,
+  res,
+) => {
+  try {
+    const { userBookId } = req.params;
+    const user = req.User;
+
+    if (!userBookId) {
+      return res.status(400).json({
+        success: false,
+        message: "UserBook ID is required",
+      });
+    }
+
+    const userbook = await db.query.userBooks.findFirst({
+      where: (userBooks, { eq, and }) =>
+        and(eq(userBooks.id, userBookId), eq(userBooks.userId, user.id)),
+    });
+
+    if (!userbook) {
+      return res.status(404).json({
+        success: false,
+        message: "UserBook not found",
+      });
+    }
+
+    await db
+      .delete(userBooks)
+      .where(and(eq(userBooks.id, userBookId), eq(userBooks.userId, user.id)));
+
+    return res.status(200).json({
+      success: true,
+      message: "Book removed from library successfully",
+    });
+  } catch (err) {
+    console.log("Error in removing book from library", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };

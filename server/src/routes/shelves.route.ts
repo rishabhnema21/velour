@@ -1,7 +1,7 @@
 import express from "express";
 import { attachUser } from "../middleware/attatchUser";
 import { requireAuth } from "@clerk/express";
-import { createCustomShelves, getShelfBooks, getShelves, renameShelf } from "../controller/shelves.controller";
+import { createCustomShelves, deleteShelf, getShelfBooks, getShelves, renameShelf } from "../controller/shelves.controller";
 import type { ShelfParams } from "../types/params";
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get<ShelfParams>("/:shelfId", requireAuth(), attachUser, getShelfBooks);
 router.post("/", requireAuth(), attachUser, createCustomShelves);
 // Rename shelves
 router.patch("/:shelfId", requireAuth(), attachUser, renameShelf);
-
 // delete custom shelves
+router.delete("/:shelfId", requireAuth(), attachUser, deleteShelf);
 
 export default router;

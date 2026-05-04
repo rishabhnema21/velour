@@ -36,11 +36,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
       >
-        <main className="relative selection:bg-[#3f3f3f] selection:text-[#ededed]">
+        <main className="relative bg-[#111] selection:bg-[#3f3f3f] selection:text-[#ededed]">
           <header className="absolute z-50 w-full flex justify-center items-center">
             <Navigation />
           </header>
-          {children}
+          <div className="">
+            {children}
+          </div>
         </main>
       </body>
     </html>

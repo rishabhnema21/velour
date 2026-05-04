@@ -1,10 +1,12 @@
 import Hero from '@/components/sections/home/Hero'
+import Image from 'next/image'
 import React from 'react'
 
 const Home = () => {
   return (
-    <div className='bg-[#d0dfdf] min-h-screen'>
+    <div className='bg-[#111] min-h-screen w-full pt-20 overflow-hidden'>
       <Hero />
+      {/* <Features /> */}
     </div>
   )
 }

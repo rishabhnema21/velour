@@ -123,7 +123,7 @@ export const createCustomShelves = async (req: Request, res: Response) => {
 };
 
 // rename custom shelves
-export const renameShelf = async (req: Request, res: Response) => {
+export const renameShelf: RequestHandler<ShelfParams> = async (req, res) => {
   const user = req.User;
   try {
     const { shelfId } = req.params;
@@ -144,25 +144,87 @@ export const renameShelf = async (req: Request, res: Response) => {
     }
 
     const shelf = await db.query.shelves.findFirst({
-      where: (shelves, { eq, and }) => and(eq(shelves.id, shelfId), eq(shelves.userId, user.id)),
+      where: (shelves, { eq, and }) =>
+        and(eq(shelves.id, shelfId), eq(shelves.userId, user.id)),
     });
 
     if (!shelf) {
       return res.status(404).json({
         success: false,
         message: "Shelf Not Found",
-      })
-    };
+      });
+    }
 
     if (shelf.isSystem) {
-      return res.status(400).json({success: false, message: "Default Shelves could not be renamed"});
-    };
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Default Shelves could not be renamed",
+        });
+    }
 
-    const updatedShelf = await db.update(shelves).set({name}).where(eq(shelves.id, shelfId)).returning();
+    const updatedShelf = await db
+      .update(shelves)
+      .set({ name })
+      .where(eq(shelves.id, shelfId))
+      .returning();
 
-    return res.status(200).json({success: true, data: updatedShelf[0], message: "Shelf Renamed Successfully"});
+    return res
+      .status(200)
+      .json({
+        success: true,
+        data: updatedShelf[0],
+        message: "Shelf Renamed Successfully",
+      });
   } catch (err) {
     console.log("Error Renaming Shelf: ", err);
     res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+// Deleting custom shelves
+export const deleteShelf: RequestHandler<ShelfParams> = async (req, res) => {
+  const user = req.User;
+  try {
+    const { shelfId } = req.params;
+    if (!shelfId) {
+      console.log("Shelf not found");
+      return res
+        .status(404)
+        .json({ success: false, message: "Shelf Not Found" });
+    }
+
+    const shelf = await db.query.shelves.findFirst({
+      where: (shelves, { eq, and }) =>
+        and(eq(shelves.id, shelfId), eq(shelves.userId, user.id)),
+    });
+
+    if (!shelf) {
+      return res.status(404).json({
+        success: false,
+        message: "Shelf Not Found",
+      });
+    }
+
+    if (shelf.isSystem) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Default Shelves could not be deleted",
+        });
+    }
+
+    await db.delete(shelves).where(eq(shelves.id, shelfId));
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Shelf Deleted Successfully" });
+  } catch (err) {
+    console.log("Error Deleting Shelf: ", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };

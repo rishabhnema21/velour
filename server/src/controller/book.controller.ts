@@ -26,8 +26,10 @@ export const getBooks = async (req: Request, res: Response) => {
     const existingBooks = await db.select().from(books).where(searchCondition);
 
     if (existingBooks.length > 0) {
-      console.log("Books found in DB: ", existingBooks);
-      return res.json(existingBooks);
+      return res.status(200).json({
+        success: true,
+        books: existingBooks,
+      });
     }
 
     console.log("searching in google books api");

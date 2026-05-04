@@ -1,3 +1,4 @@
+import "@clerk/express/env";
 import { users } from "../db/schema";
 
 declare global {
