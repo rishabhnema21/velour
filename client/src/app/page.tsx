@@ -1,5 +1,4 @@
 import Hero from '@/components/sections/home/Hero'
-import Image from 'next/image'
 import React from 'react'
 
 const Home = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image';
 
@@ -15,7 +15,7 @@ type Book = {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
-const Page = () => {
+const SearchContent = () => {
   const searchParams = useSearchParams()
   const query = useMemo(() => (searchParams.get("q") || "").trim(), [searchParams])
   const [books, setBooks] = useState<Book[]>([])
@@ -60,12 +60,12 @@ const Page = () => {
   }, [query])
 
   return (
-    <div className='px-4 md:px-10 pt-20 bg-[#d0dfdf] min-h-screen font-[urbanist] text-[#191919]'>
+    <div className='px-4 md:px-10 pt-20 min-h-screen font-[urbanist] text-neutral-200'>
       <div className='mb-8'>
         <h1 className='text-3xl md:text-4xl font-semibold'>
           Search results{query ? ` for "${query}"` : ""}
         </h1>
-        <p className='text-sm text-[#4a4a4a] mt-1'>
+        <p className='text-sm text-[#6c6c6c] mt-1'>
           {query ? "Browse the books we found for your search." : "Type a search in the top bar to get started."}
         </p>
       </div>
@@ -87,7 +87,7 @@ const Page = () => {
           const cover = book.thumbnail || book.smallThumbnail || "/book.jfif"
           return (
             <div key={book.id} className='bg-white rounded-md  overflow-hidden'>
-              <div className='h-72 bg-[#f5f5f5]'>
+              <div className='h-62 bg-[#f5f5f5]'>
                 <Image
                   src={cover}
                   alt={book.title}
@@ -98,7 +98,7 @@ const Page = () => {
                 />
               </div>
               <div className='p-4'>
-                <h2 className='text-lg font-semibold mb-1'>{book.title}</h2>
+                <h2 className='text-lg text-neutral-800 font-semibold mb-1'>{book.title}</h2>
                 {book.authors && book.authors.length > 0 && (
                   <p className='text-sm text-[#4a4a4a] mb-2'>
                     {book.authors.join(", ")}
@@ -115,6 +115,20 @@ const Page = () => {
         })}
       </div>
     </div>
+  )
+}
+
+const Page = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className='px-4 md:px-10 pt-20 min-h-screen font-[urbanist] text-neutral-200'>
+          Loading search...
+        </div>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   )
 }
 

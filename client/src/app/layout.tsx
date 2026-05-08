@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins, Urbanist } from "next/font/google";
+import { Geist, Geist_Mono, Urbanist } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { ClerkProvider } from "@clerk/nextjs";
