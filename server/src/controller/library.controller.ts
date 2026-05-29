@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from "express";
 import { db } from "../db";
 import { books, shelfBooks, shelves, userBooks, users } from "../db/schema";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
 import type { UserBookParams } from "../types/params";
 
 export const addToLibrary = async (req: Request, res: Response) => {
@@ -251,3 +251,62 @@ export const removeFromLibrary: RequestHandler<UserBookParams> = async (
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+
+export const handleLibraryOverview = async (req: Request, res: Response) => {
+  try {
+    const user = req.User;
+
+    const shelfOverview = await db.select({
+      id: shelves.id,
+      name: shelves.name,
+      isSystem: shelves.isSystem,
+      createdAt: shelves.createdAt,
+      bookCount: count(shelfBooks.id),
+    })
+    .from(shelves)
+    .leftJoin(shelfBooks, eq(shelves.id, shelfBooks.shelfId))
+    .where(eq(shelves.userId, user.id))
+    .groupBy(shelves.id, shelves.name, shelves.isSystem, shelves.createdAt)
+    .orderBy(desc(shelves.isSystem), asc(shelves.createdAt));
+
+    const recentlyAdded = await db.query.userBooks.findMany({
+      where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
+      orderBy: (userBooks, { desc}) => desc(userBooks.createdAt),
+      limit: 6,
+      with: {
+        book: true,
+      }
+    })
+
+    const formattedShelves = shelfOverview.map((shelf) => ({
+      id: shelf.id,
+      name: shelf.name,
+      isSystem: shelf.isSystem,
+      bookCount: Number(shelf.bookCount),
+      createdAt: shelf.createdAt,
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        defaultShelves: formattedShelves.filter((shelf) => shelf.isSystem),
+        customShelves: formattedShelves.filter((shelf) => !shelf.isSystem),
+        recentlyAdded: recentlyAdded.map((item) => ({
+          id: item.id,
+          title: item.book.title,
+          authors: item.book.authors,
+          thumbnail: item.book.thumbnail,
+          smallThumbnail: item.book.smallThumbnail,
+        }))
+      }
+    })
+
+  } catch (err) {
+    console.log("Error in getting library overview: ", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+}
