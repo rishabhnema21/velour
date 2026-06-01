@@ -10,7 +10,7 @@ import {
 import { attachUser } from "../middleware/attatchUser";
 const router = express.Router();
 
-router.post("/", requireAuth(), addToLibrary); // add a book to the library
+router.post("/", requireAuth(), attachUser, addToLibrary); // add a book to the library
 // to have an overview of the library and its shelves
 router.get("/overview", requireAuth(), attachUser, handleLibraryOverview);
 router.get("/", requireAuth(), attachUser, getLibraryBooks); // get all books in the library of the user.

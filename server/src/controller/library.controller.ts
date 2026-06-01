@@ -1,20 +1,13 @@
 import { Request, RequestHandler, Response } from "express";
 import { db } from "../db";
-import { books, shelfBooks, shelves, userBooks, users } from "../db/schema";
+import { books, shelfBooks, shelves, userBooks } from "../db/schema";
 import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
 import type { UserBookParams } from "../types/params";
 
 export const addToLibrary = async (req: Request, res: Response) => {
   try {
-    // extracting user's clerk id and book id from the request body
+    const user = req.User;
     const { bookId } = req.body;
-    const auth = req.auth();
-    const clerkId = "userId" in auth ? auth.userId : null;
-    if (!clerkId) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
-
-    console.log("Clerk ID from token:", clerkId);
 
     if (!bookId) {
       return res
@@ -23,22 +16,6 @@ export const addToLibrary = async (req: Request, res: Response) => {
     }
 
     console.log("Book ID from request body:", bookId);
-    // searching for the user in the database using the clerk id
-    console.log("Searching for the user");
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkUserId, clerkId))
-      .limit(1);
-
-    // if user is not found, return and error response
-
-    if (!user || user.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-    console.log("User found: ", user[0].id);
     // if user is found, search for the book in the database using the book id
 
     const book = await db
@@ -61,7 +38,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
       .select()
       .from(userBooks)
       .where(
-        and(eq(userBooks.userId, user[0].id), eq(userBooks.bookId, book[0].id)),
+        and(eq(userBooks.userId, user.id), eq(userBooks.bookId, book[0].id)),
       )
       .limit(1);
 
@@ -74,7 +51,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
       const insertResult = await db
         .insert(userBooks)
         .values({
-          userId: user[0].id,
+          userId: user.id,
           bookId: book[0].id,
         })
         .returning();
@@ -87,7 +64,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
       .select()
       .from(shelves)
       .where(
-        and(eq(shelves.userId, user[0].id), eq(shelves.name, "TO BE READ")),
+        and(eq(shelves.userId, user.id), eq(shelves.name, "TO BE READ")),
       )
       .limit(1);
 
