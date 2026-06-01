@@ -171,6 +171,18 @@ export const updateBookShelf: RequestHandler<UserBookParams> = async (
         .json({ success: false, message: "Shelf Not Found" });
     }
 
+    const userbook = await db.query.userBooks.findFirst({
+      where: (userBooks, { eq, and }) =>
+        and(eq(userBooks.id, userBookId), eq(userBooks.userId, user.id)),
+    });
+
+    if (!userbook) {
+      return res.status(404).json({
+        success: false,
+        message: "UserBook not found",
+      });
+    }
+
     if (shelf.isSystem) {
       const systemShelves = await db
         .select({ id: shelves.id })

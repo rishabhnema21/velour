@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import { useAuth, useClerk } from "@clerk/nextjs";
+import React, { useEffect, useRef } from "react";
 import {
   CiBookmark,
   CiCompass1,
@@ -27,6 +28,22 @@ type ProtectedLayoutProps = {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const pathname = usePathname();
+  const { isLoaded, isSignedIn } = useAuth();
+  const { openSignIn, signOut } = useClerk();
+  const hasOpenedSignIn = useRef(false);
+
+  useEffect(() => {
+    if (!isLoaded || isSignedIn || hasOpenedSignIn.current) return;
+
+    hasOpenedSignIn.current = true;
+    openSignIn();
+  }, [isLoaded, isSignedIn, openSignIn]);
+
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <div className="min-h-screen bg-[#030508] text-neutral-100 font-[urbanist]" />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#030508] text-neutral-100 font-[urbanist]">
@@ -73,6 +90,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
             </Link>
             <button
               type="button"
+              onClick={() => signOut()}
               className="flex h-11 w-full items-center justify-center gap-3 rounded-lg px-3 text-sm text-neutral-400 transition hover:bg-white/5 hover:text-white md:justify-start"
               aria-label="Logout"
             >

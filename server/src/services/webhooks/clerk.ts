@@ -12,8 +12,6 @@ export const clerkWebhookHandler = async (req: Request, res: Response) => {
       throw new Error("Clerk webhook secret is not configured");
     }
 
-    console.log(config.clerkWebhookSecret);
-
     // Get the headers
     const svix_id = req.headers["svix-id"] as string;
     const svix_timestamp = req.headers["svix-timestamp"] as string;
@@ -59,9 +57,6 @@ export const clerkWebhookHandler = async (req: Request, res: Response) => {
       " for user id: ",
       id,
     );
-
-    // logging the entire event data for debugging
-    console.log("Full Event Data: ", JSON.stringify(evt.data, null, 2));
 
     if (eventType === "user.created") {
       const { email_addresses, image_url, primary_email_address_id } = evt.data;
