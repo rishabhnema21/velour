@@ -7,7 +7,7 @@ import SystemShelves from "@/components/library/SystemShelves";
 import { useLibraryOverview } from "@/hooks/useLibraryOverview";
 
 const Page = () => {
-  const { overview, loading, error } = useLibraryOverview();
+  const { overview, loading, error, refetch } = useLibraryOverview();
 
   return (
     <div className="pb-2 md:pb-10">
@@ -20,7 +20,11 @@ const Page = () => {
       )}
 
       <SystemShelves shelves={overview.defaultShelves} loading={loading} />
-      <CustomShelves shelves={overview.customShelves} loading={loading} />
+      <CustomShelves
+        shelves={overview.customShelves}
+        loading={loading}
+        onShelfCreated={refetch}
+      />
       <RecentlyAddedBooks books={overview.recentlyAdded} loading={loading} />
     </div>
   );

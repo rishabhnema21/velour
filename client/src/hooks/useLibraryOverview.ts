@@ -2,7 +2,7 @@
 
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -46,18 +46,8 @@ export const useLibraryOverview = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    if (!isSignedIn) {
-      setLoading(false);
-      setError("Please sign in to view your library.");
-      return;
-    }
-
-    const controller = new AbortController();
-
-    const loadOverview = async () => {
+  const loadOverview = useCallback(
+    async (signal?: AbortSignal) => {
       try {
         setLoading(true);
         setError(null);
@@ -67,7 +57,7 @@ export const useLibraryOverview = () => {
           `${API_BASE}/api/library/overview`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-            signal: controller.signal,
+            signal,
           },
         );
 
@@ -90,12 +80,25 @@ export const useLibraryOverview = () => {
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [getToken],
+  );
 
-    loadOverview();
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (!isSignedIn) {
+      setLoading(false);
+      setError("Please sign in to view your library.");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    loadOverview(controller.signal);
 
     return () => controller.abort();
-  }, [getToken, isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, loadOverview]);
 
-  return { overview, loading, error };
+  return { overview, loading, error, refetch: loadOverview };
 };

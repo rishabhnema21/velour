@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Urbanist } from "next/font/google";
+import { Geist, Geist_Mono, Urbanist, Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { ClerkProvider } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
+import { ToastProvider } from "@/components/notifications/ToastProvider";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,18 +36,20 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={cn("font-sans", inter.variable)}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
       >
-        <main className="relative bg-[#111] selection:bg-[#3f3f3f] selection:text-[#ededed]">
-          <header className="absolute z-50 w-full flex justify-center items-center">
-            <Navigation />
-          </header>
-          <div className="">
-            {children}
-          </div>
-        </main>
+        <ToastProvider>
+          <main className="relative bg-[#111] selection:bg-[#3f3f3f] selection:text-[#ededed]">
+            <header className="absolute z-50 w-full flex justify-center items-center">
+              <Navigation />
+            </header>
+            <div className="">
+              {children}
+            </div>
+          </main>
+        </ToastProvider>
       </body>
     </html>
     </ClerkProvider>
