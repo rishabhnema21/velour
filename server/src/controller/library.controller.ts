@@ -282,7 +282,7 @@ export const handleLibraryOverview = async (req: Request, res: Response) => {
         defaultShelves: formattedShelves.filter((shelf) => shelf.isSystem),
         customShelves: formattedShelves.filter((shelf) => !shelf.isSystem),
         recentlyAdded: recentlyAdded.map((item) => ({
-          id: item.id,
+          id: item.book.id,
           title: item.book.title,
           authors: item.book.authors,
           thumbnail: item.book.thumbnail,

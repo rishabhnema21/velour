@@ -28,7 +28,7 @@ export const getBooks = async (req: Request, res: Response) => {
     if (existingBooks.length > 0) {
       return res.status(200).json({
         success: true,
-        books: existingBooks,
+        data: existingBooks,
       });
     }
 
@@ -97,8 +97,8 @@ export const getBooks = async (req: Request, res: Response) => {
     console.log("resulted books: ", resultedBooks);
 
     return res.status(200).json({
-      message: "Books fetched and stored successfully",
-      books: resultedBooks,
+      success: true,
+      data: resultedBooks,
     });
   } catch (err) {
     console.log("Error fetching books: ", err);
@@ -120,7 +120,7 @@ export const getOneBook = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    return res.status(200).json({ success: true, book: book[0] });
+    return res.status(200).json({ success: true, data: book[0] });
   } catch (err) {
     console.log("Error fetching book: ", err);
     return res.status(500).json({ message: "Internal Server error" });

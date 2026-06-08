@@ -5,6 +5,8 @@ import Navigation from "@/components/Navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/components/notifications/ToastProvider";
+import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
+
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -34,12 +36,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <ClerkProvider>
       <html lang="en" className={cn("font-sans", inter.variable)}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
       >
+        <ReactQueryProvider>
         <ToastProvider>
           <main className="relative bg-[#111] selection:bg-[#3f3f3f] selection:text-[#ededed]">
             <header className="absolute z-50 w-full flex justify-center items-center">
@@ -50,6 +54,7 @@ export default function RootLayout({
             </div>
           </main>
         </ToastProvider>
+        </ReactQueryProvider>
       </body>
     </html>
     </ClerkProvider>
