@@ -1,4 +1,8 @@
+'use client'
+
+import { useBookDrawerStore } from "@/store/BookDrawerStore";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 type BookCardProps = {
     id: string;
     cover: string;
@@ -8,8 +12,11 @@ type BookCardProps = {
 };
 
 const BookCard = ({id, cover, title, authors, description}: BookCardProps) => {
+
+  const router = useRouter();
+  const { openDrawer } = useBookDrawerStore();
     return (
-        <div onClick={() => console.log(`book: ${id}`)} className='bg-white rounded-md  overflow-hidden'>
+        <div onClick={() => openDrawer(id)} className='bg-white rounded-md  overflow-hidden'>
               <div className='h-62 bg-[#f5f5f5]'>
                 <Image
                   src={cover}

@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/components/notifications/ToastProvider";
 import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
+import BookDrawer from "@/components/book/BookDrawer";
 
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
@@ -53,7 +54,8 @@ export default function RootLayout({
               {children}
             </div>
           </main>
-        </ToastProvider>
+          </ToastProvider>
+              <BookDrawer />
         </ReactQueryProvider>
       </body>
     </html>
