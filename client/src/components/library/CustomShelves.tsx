@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import type { LibraryShelf } from "@/hooks/useLibraryOverview";
 import CreateShelfCard from "./CreateShelfCard";
-import CustomShelfCard from "./CustomShelfCard";
+import ShelfCard from "./ShelfCard";
 import CustomShelfSkeleton from "./CustomShelfSkeleton";
 import { useState } from "react";
 import { CreateShelfModal } from "../modals/CreateShelfModal";
@@ -18,7 +18,6 @@ const CustomShelves = ({
   loading,
   onShelfCreated,
 }: CustomShelvesProps) => {
-
   const [isCreateShelfOpen, setIsCreateShelfOpen] = useState(false);
 
   return (
@@ -39,19 +38,17 @@ const CustomShelves = ({
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-4">
         <CreateShelfCard onClick={() => setIsCreateShelfOpen(true)} />
-          <CreateShelfModal
-            open={isCreateShelfOpen}
-            onOpenChange={setIsCreateShelfOpen}
-            onCreated={onShelfCreated}
-          />
+        <CreateShelfModal
+          open={isCreateShelfOpen}
+          onOpenChange={setIsCreateShelfOpen}
+          onCreated={onShelfCreated}
+        />
 
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
               <CustomShelfSkeleton key={index} />
             ))
-          : shelves.map((shelf) => (
-              <CustomShelfCard key={shelf.id} shelf={shelf} />
-            ))}
+          : shelves.map((shelf) => <ShelfCard key={shelf.id} shelf={shelf} />)}
 
         {!loading && shelves.length === 0 && (
           <div className="flex min-h-40 items-center rounded-xl border border-white/8 bg-[#0d1012]/70 p-5 text-sm text-neutral-400 sm:min-h-47.5">
