@@ -8,8 +8,7 @@ import { ToastProvider } from "@/components/notifications/ToastProvider";
 import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
 import BookDrawer from "@/components/book/BookDrawer";
 
-
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +22,8 @@ const geistMono = Geist_Mono({
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
-  subsets: ['latin'],
-  style: ['normal', 'italic'],
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -37,28 +36,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <ClerkProvider>
       <html lang="en" className={cn("font-sans", inter.variable)}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
-      >
-        <ReactQueryProvider>
-        <ToastProvider>
-          <main className="relative bg-[#111] selection:bg-[#3f3f3f] selection:text-[#ededed]">
-            <header className="absolute z-50 w-full flex justify-center items-center">
-              <Navigation />
-            </header>
-            <div className="">
-              {children}
-            </div>
-          </main>
-          </ToastProvider>
-              <BookDrawer />
-        </ReactQueryProvider>
-      </body>
-    </html>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
+        >
+          <ReactQueryProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </ReactQueryProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CiCircleCheck } from "react-icons/ci";
 import { IoBookOutline } from "react-icons/io5";
@@ -5,6 +7,7 @@ import { LuHourglass, LuX } from "react-icons/lu";
 import type { IconType } from "react-icons";
 import type { LibraryShelf } from "@/hooks/useLibraryOverview";
 import { formatBookCount, formatShelfName } from "./libraryUtils";
+import Image from "next/image";
 
 const systemShelfStyles: Record<string, { icon: IconType; tone: string }> = {
   "CURRENTLY READING": {
@@ -48,22 +51,26 @@ const ShelfCard = ({ shelf }: ShelfCardProps) => {
   return (
     <Link
       href={`/my-library/shelf/${shelf.id}`}
-      className="group block rounded-xl border border-white/8 bg-[#0d1012]/85 p-4 shadow-xl shadow-black/20 transition hover:border-white/20 sm:p-5"
+      className="h-[40vh] relative group block rounded-sm border border-white/8 bg-[#0d1012]/85 p-2 shadow-xl shadow-black/20 transition hover:border-white/20 sm:p-1"
       aria-label={`View ${shelfName} shelf`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div
-          className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${style.tone}`}
-        >
-          <Icon className="h-5 w-5" />
+      <div className="flex items-start h-full justify-between gap-4">
+        <div className="relative h-full w-full overflow-hidden rounded-sm">
+          <Image
+            src="/placeholder.webp"
+            alt="placeholder"
+            fill
+            className="object-cover"
+          />
         </div>
-        <div className="h-20 flex-1 rounded-md border border-white/8 bg-[linear-gradient(135deg,rgba(240,201,120,0.12),rgba(255,255,255,0.04)_45%,rgba(255,255,255,0.08))] sm:h-24" />
       </div>
-      <div className="mt-5">
-        <h3 className="font-semibold text-white">{shelfName}</h3>
-        <p className="mt-1 text-sm text-neutral-400">
+      <div className="absolute top-2 right-4">
+        <p className="mt-1 text-sm text-neutral-300">
           {formatBookCount(shelf.bookCount)}
         </p>
+      </div>
+      <div className="mt-5 absolute bottom-3 left-3">
+        <h3 className="font-semibold text-3xl w-[95%] text-white">{shelfName}</h3>
       </div>
     </Link>
   );

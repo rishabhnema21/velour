@@ -43,7 +43,7 @@ const { data: books = [], isLoading, isError, error } = useQuery({
         <div>No books found for this search.</div>
       )}
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-y-4'>
         {books.map((book) => {
           const cover = book.thumbnail || book.smallThumbnail || "/book.jfif"
           return (
