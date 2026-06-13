@@ -16,27 +16,22 @@ const BookCard = ({id, cover, title, authors, description}: BookCardProps) => {
   const router = useRouter();
   const { openDrawer } = useBookDrawerStore();
     return (
-        <div onClick={() => openDrawer(id)} className='bg-white rounded-md  overflow-hidden'>
-              <div className='h-62 bg-[#f5f5f5]'>
+        <div onClick={() => openDrawer(id)} className='overflow-hidden p-2 flex flex-col items-center'>
+              <div className="w-42 h-56 bg-red">
                 <Image
                   src={cover}
                   alt={title}
                   height={1000}
                   width={1000}
-                  className='h-full w-full object-cover'
+                  className='object-cover h-full w-full'
                   loading='eager'
                 />
               </div>
-              <div className='p-4'>
-                <h2 className='text-lg text-neutral-800 font-semibold mb-1'>{title}</h2>
+              <div className='py-2 tracking-tight text-center'>
+                <h2 className='text-lg text-neutral-200 font-semibold'>{title}</h2>
                 {authors && authors.length > 0 && (
-                  <p className='text-sm text-[#4a4a4a] mb-2'>
+                  <p className='text-sm text-neutral-200'>
                     {authors.join(", ")}
-                  </p>
-                )}
-                {description && (
-                  <p className='text-sm text-[#4a4a4a] line-clamp-3'>
-                    {description}
                   </p>
                 )}
               </div>
