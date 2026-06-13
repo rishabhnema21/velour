@@ -34,16 +34,36 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   }, [isLoaded, isSignedIn, openSignIn]);
 
   if (!isLoaded || !isSignedIn) {
-    return <div className="min-h-screen bg-[#030508]" />;
+    return (
+      <div
+        className="min-h-screen"
+        style={{ backgroundColor: "var(--velour-surface)" }}
+      />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#030508] text-neutral-100 font-[urbanist]">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_24%_14%,rgba(255,255,255,0.08),transparent_28%),radial-gradient(circle_at_78%_5%,rgba(197,146,76,0.08),transparent_24%)]" />
-
+    <div
+      className="min-h-screen font-[urbanist]"
+      style={{
+        backgroundColor: "var(--velour-surface)",
+        color: "var(--velour-text)",
+      }}
+    >
       {/* sidebar */}
-      <aside className="hidden md:flex fixed inset-y-0 left-0 z-30 w-52 flex-col border-r border-white/8 bg-[#0a0a0a]">
-        <div className="flex h-14 shrink-0 items-center px-4 border-b border-white/8">
+      <aside
+        className="hidden md:flex fixed inset-y-0 left-0 z-30 w-52 flex-col border-r"
+        style={{
+          backgroundColor: "var(--velour-surface)",
+          borderColor: "var(--velour-border)",
+        }}
+      >
+        <div
+          className="flex h-14 shrink-0 items-center px-4 border-b"
+          style={{
+            borderColor: "var(--velour-border)",
+          }}
+        >
           <Logo />
         </div>
 
@@ -55,25 +75,63 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex h-10 items-center gap-3 rounded-lg px-3 text-sm transition ${
-                  isActive
-                    ? "bg-white/9 text-white"
-                    : "text-neutral-400 hover:bg-white/5 hover:text-white"
-                }`}
+                className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm transition"
+                style={{
+                  backgroundColor: isActive
+                    ? "var(--velour-accent)"
+                    : "transparent",
+                  color: isActive
+                    ? "var(--velour-surface)"
+                    : "var(--velour-text-muted)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "var(--velour-surface-tertiary)";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "var(--velour-text)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "transparent";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "var(--velour-text-muted)";
+                  }
+                }}
               >
-                <Icon
-                  className={`h-5 w-5 shrink-0 ${isActive ? "text-[#f0c978]" : "text-neutral-400"}`}
-                />
+                <Icon className="h-5 w-5 shrink-0" />
                 {item.label}
               </Link>
             );
           })}
         </nav>
 
-        <div className="space-y-1 border-t border-white/8 p-2 pb-4">
+        <div
+          className="space-y-1 border-t p-2 pb-4"
+          style={{
+            borderColor: "var(--velour-border)",
+          }}
+        >
           <Link
             href="/settings"
-            className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm text-neutral-400 transition hover:bg-white/5 hover:text-white"
+            className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm transition"
+            style={{ color: "var(--velour-text-muted)" }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "var(--velour-surface-tertiary)";
+              (e.currentTarget as HTMLAnchorElement).style.color =
+                "var(--velour-text)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "transparent";
+              (e.currentTarget as HTMLAnchorElement).style.color =
+                "var(--velour-text-muted)";
+            }}
           >
             <CiSettings className="h-5 w-5" />
             Settings
@@ -81,7 +139,20 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
           <button
             type="button"
             onClick={() => signOut()}
-            className="flex h-10 w-full items-center gap-3 rounded-lg px-3 text-sm text-neutral-400 transition hover:bg-white/5 hover:text-white"
+            className="flex h-10 w-full items-center gap-3 rounded-lg px-3 text-sm transition"
+            style={{ color: "var(--velour-text-muted)" }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                "var(--velour-surface-tertiary)";
+              (e.currentTarget as HTMLButtonElement).style.color =
+                "var(--velour-text)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                "transparent";
+              (e.currentTarget as HTMLButtonElement).style.color =
+                "var(--velour-text-muted)";
+            }}
           >
             <CiLogout className="h-5 w-5" />
             Logout
@@ -90,7 +161,13 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       {/* header */}
-      <header className="fixed top-0 left-0 right-0 md:left-52 z-40 h-14 border-b border-white/8 bg-[#030508]/80 backdrop-blur-xl flex items-center px-4 gap-4">
+      <header
+        className="fixed top-0 left-0 right-0 md:left-52 z-40 h-14 border-b backdrop-blur-xl flex items-center px-4 gap-4"
+        style={{
+          backgroundColor: "rgba(253, 252, 251, 0.8)",
+          borderColor: "var(--velour-border)",
+        }}
+      >
         <SearchBar />
         <div className="ml-auto">
           <UserButton />
@@ -98,7 +175,13 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       </header>
 
       {/* mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex md:hidden border-t border-white/8 bg-[#0a0a0a] px-2 py-2">
+      <nav
+        className="fixed inset-x-0 bottom-0 z-30 flex md:hidden border-t px-2 py-2"
+        style={{
+          backgroundColor: "var(--velour-surface)",
+          borderColor: "var(--velour-border)",
+        }}
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -106,11 +189,14 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-2 text-[10px] transition ${
-                isActive ? "text-white" : "text-neutral-500 hover:text-white"
-              }`}
+              className="flex flex-1 flex-col items-center gap-1 rounded-lg py-2 text-[10px] transition"
+              style={{
+                color: isActive
+                  ? "var(--velour-accent)"
+                  : "var(--velour-text-muted)",
+              }}
             >
-              <Icon className={`h-5 w-5 ${isActive ? "text-[#f0c978]" : ""}`} />
+              <Icon className="h-5 w-5" />
               {item.label}
             </Link>
           );

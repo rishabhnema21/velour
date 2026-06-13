@@ -96,15 +96,33 @@ export function CreateShelfModal({
 
   return (
     <Modal open={open} onOpenChange={handleOpenChange}>
-      <ModalContent className="sm:max-w-[60vw] sm:h-[70vh] overflow-hidden p-0 bg-[#0E1013] border border-white/5 rounded-2xl shadow-2xl shadow-black/80">
+      <ModalContent
+        className="sm:max-w-[60vw] sm:h-[70vh] overflow-hidden p-0 rounded-lg shadow-lg"
+        style={{
+          backgroundColor: "var(--velour-surface-secondary)",
+          borderColor: "var(--velour-border)",
+        }}
+      >
         <div className="flex flex-col-reverse md:flex-row w-full h-full">
-          <div className="w-full md:w-[45%] px-4 pb-4 md:p-10 flex flex-col justify-between border-r border-white/5 bg-gradient-to-b from-[#121519] to-[#0E1013] relative z-10">
+          <div
+            className="w-full md:w-[45%] px-4 pb-4 md:p-10 flex flex-col justify-between border-r relative z-10"
+            style={{
+              backgroundColor: "var(--velour-surface)",
+              borderColor: "var(--velour-border)",
+            }}
+          >
             <form onSubmit={handleSubmit}>
               <div className="space-y-5 md:space-y-3">
-                <h2 className="text-4xl font-bold text-[#F5F2EB] tracking-wide leading-tight">
+                <h2
+                  className="text-4xl font-bold tracking-wide leading-tight"
+                  style={{ color: "var(--velour-ink)" }}
+                >
                   Build a new shelf.
                 </h2>
-                <p className="text-sm text-zinc-400 font-light leading-relaxed">
+                <p
+                  className="text-sm font-light leading-relaxed"
+                  style={{ color: "var(--velour-text-muted)" }}
+                >
                   Give your collection a place to grow.
                 </p>
               </div>
@@ -112,7 +130,8 @@ export function CreateShelfModal({
               <div className="space-y-4 md:space-y-2.5 my-auto">
                 <Label
                   htmlFor="shelf-title"
-                  className="block text-[12px] font-semibold text-zinc-500 uppercase tracking-widest bg-transparent border-0 p-0"
+                  className="block text-[12px] font-semibold uppercase tracking-widest bg-transparent border-0 p-0"
+                  style={{ color: "var(--velour-text-muted)" }}
                 >
                   Shelf Title
                 </Label>
@@ -122,10 +141,22 @@ export function CreateShelfModal({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Midnight Melancholy, Runaway Fantasies..."
-                  className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-[#F5F2EB] placeholder-zinc-600 transition-all duration-300 outline-none"
+                  className="w-full border rounded-lg px-4 py-3.5 text-sm transition-all duration-300 outline-none"
+                  style={{
+                    backgroundColor: "var(--velour-surface-tertiary)",
+                    borderColor: "var(--velour-border-light)",
+                    color: "var(--velour-text)",
+                  }}
                   disabled={loading}
                 />
-                {error && <p className="text-sm text-red-300">{error}</p>}
+                {error && (
+                  <p
+                    className="text-sm"
+                    style={{ color: "var(--velour-shelf-dnf)" }}
+                  >
+                    {error}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-center justify-end my-4 md:my-0 space-x-5">
@@ -133,14 +164,19 @@ export function CreateShelfModal({
                   type="button"
                   onClick={() => handleOpenChange(false)}
                   disabled={loading}
-                  className="text-xs font-sans font-normal text-zinc-500 hover:text-zinc-300 hover:bg-transparent transition-colors duration-200 tracking-wide px-6 cursor-pointer py-3 h-auto"
+                  className="text-xs font-sans font-normal transition-colors duration-200 tracking-wide px-6 cursor-pointer py-3 h-auto"
+                  style={{ color: "var(--velour-text-muted)" }}
                 >
                   Abandon
                 </Button>
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="bg-[#F5F2EB] hover:bg-[#E5E2DC] text-[#0E1013] font-sans font-medium text-xs px-6 py-3 rounded-md shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer tracking-wide h-auto"
+                  className="font-sans font-medium text-xs px-6 py-3 rounded-md shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer tracking-wide h-auto"
+                  style={{
+                    backgroundColor: "var(--velour-accent)",
+                    color: "var(--velour-surface)",
+                  }}
                 >
                   {loading ? "Creating..." : "Create Shelf"}
                 </Button>
@@ -148,14 +184,19 @@ export function CreateShelfModal({
             </form>
           </div>
 
-          <div className="md:w-[55%] h-32 md:h-full w-full bg-[#0A0C0E] relative flex items-center justify-center overflow-hidden">
+          <div
+            className="md:w-[55%] h-32 md:h-full w-full relative flex items-center justify-center overflow-hidden"
+            style={{
+              backgroundColor: "var(--velour-surface-secondary)",
+            }}
+          >
             <div className="w-full h-full p-4 rounded-sm flex items-center justify-center relative z-10 opacity-80 hover:opacity-100 transition-opacity duration-700 ease-out">
               <Image
                 src="/create_shelf.jpg"
                 alt="Bibliophilic"
                 width={450}
                 height={450}
-                className="w-full rounded-sm h-auto object-cover max-h-[85%] mix-blend-screen opacity-65 select-none pointer-events-none"
+                className="w-full rounded-sm h-auto object-cover max-h-[85%] mix-blend-multiply opacity-50 select-none pointer-events-none"
               />
             </div>
 
@@ -163,7 +204,16 @@ export function CreateShelfModal({
               type="button"
               onClick={() => handleOpenChange(false)}
               disabled={loading}
-              className="absolute top-6 right-6 text-zinc-600 hover:text-zinc-400 transition-colors duration-200 z-20"
+              className="absolute top-6 right-6 transition-colors duration-200 z-20"
+              style={{ color: "var(--velour-text-muted)" }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.color =
+                  "var(--velour-text)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.color =
+                  "var(--velour-text-muted)";
+              }}
               aria-label="Close modal"
             >
               <X />

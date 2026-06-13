@@ -16,16 +16,33 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 
 const Navigation = () => {
-
   return (
-    <nav className="w-[97%] rounded-md text-neutral-200 font-[urbanist] mt-3 px-3 py-3 flex flex-wrap justify-between items-center gap-3 md:px-4">
+    <nav
+      className="w-[97%] rounded-md font-[urbanist] mt-3 px-3 py-3 flex flex-wrap justify-between items-center gap-3 md:px-4"
+      style={{ color: "var(--velour-text)" }}
+    >
       <Logo />
       <SearchBar />
       <div className="flex shrink-0 items-center gap-3 text-sm sm:text-base">
         <SignedOut>
           <SignInButton mode="modal" />
           <SignUpButton mode="modal">
-            <button className="bg-[#302f2f] cursor-pointer text-[#ededed] px-3 py-1 rounded-sm">
+            <button
+              className="cursor-pointer px-3 py-1 rounded-sm transition"
+              style={{
+                backgroundColor: "var(--velour-surface-secondary)",
+                color: "var(--velour-text)",
+                border: "1px solid var(--velour-border)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "var(--velour-surface-tertiary)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "var(--velour-surface-secondary)";
+              }}
+            >
               Start Journey
             </button>
           </SignUpButton>

@@ -24,7 +24,7 @@ const RecentlyAddedBooks = ({ books, loading }: RecentlyAddedBooksProps) => {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 rounded-xl border border-white/8 bg-[#0d1012]/70 p-3 sm:grid-cols-3 sm:gap-4 sm:p-5 md:grid-cols-4 xl:grid-cols-6">
+      <div className="grid grid-cols-3 gap-3 rounded-md border border-white/8 bg-secondary p-3 sm:grid-cols-3 sm:gap-4 sm:p-5 md:grid-cols-4 xl:grid-cols-6">
         {loading
           ? Array.from({ length: 6 }).map((_, index) => (
               <div

@@ -51,7 +51,7 @@ const ShelfCard = ({ shelf }: ShelfCardProps) => {
   return (
     <Link
       href={`/my-library/shelf/${shelf.id}`}
-      className="h-[40vh] relative group block rounded-sm border border-white/8 bg-[#0d1012]/85 p-2 shadow-xl shadow-black/20 transition hover:border-white/20 sm:p-1"
+      className="h-[40vh] relative group block bg-secondary rounded-sm border border-neutral-200 p-2 shadow-md shadow-black/10 transition hover:border-neutral-400 sm:p-1"
       aria-label={`View ${shelfName} shelf`}
     >
       <div className="flex items-start h-full justify-between gap-4">

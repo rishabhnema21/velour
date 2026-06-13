@@ -16,18 +16,18 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSearch}
-      className="relative order-3 w-full rounded-md border border-white/8 bg-white/8 shadow-xl shadow-black/10 sm:order-none sm:max-w-[360px] md:max-w-[420px]"
+      className="relative order-3 w-full rounded-md bg-white/8  sm:order-0 sm:max-w-90 md:max-w-105"
     >
       <input
         type="text"
         placeholder="Search for your next read"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="h-11 w-full bg-transparent pl-4 pr-11 text-sm text-neutral-100 outline-none placeholder:text-neutral-500"
+        className="h-11 w-full pl-4 pr-11 text-sm bg-neutral-300/60 rounded-sm text-neutral-800 outline-none placeholder:text-neutral-500"
       />
       <button
         type="submit"
-        className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-neutral-300 transition hover:bg-white/10 hover:text-white"
+        className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-neutral-800 transition hover:bg-white/10 hover:text-neutral-900 pointer-cursor"
         aria-label="Search"
       >
         <CiSearch className="h-5 w-5" />

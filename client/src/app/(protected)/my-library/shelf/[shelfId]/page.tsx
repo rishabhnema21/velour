@@ -17,13 +17,37 @@ const Page = () => {
         <div className="flex items-center gap-3">
           <Link
             href="/my-library"
-            className="grid h-10 w-10 place-items-center rounded-md bg-white/5 text-neutral-300 hover:bg-white/10"
+            className="grid h-10 w-10 place-items-center rounded-md transition"
+            style={{
+              backgroundColor: "var(--velour-surface-secondary)",
+              color: "var(--velour-text-muted)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "var(--velour-surface-tertiary)";
+              (e.currentTarget as HTMLAnchorElement).style.color =
+                "var(--velour-text)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "var(--velour-surface-secondary)";
+              (e.currentTarget as HTMLAnchorElement).style.color =
+                "var(--velour-text-muted)";
+            }}
           >
             <LuArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-semibold">{shelf?.name || "Shelf"}</h1>
-            <p className="text-sm text-neutral-400">
+            <h1
+              className="text-2xl font-semibold"
+              style={{ color: "var(--velour-ink)" }}
+            >
+              {shelf?.name || "Shelf"}
+            </h1>
+            <p
+              className="text-sm"
+              style={{ color: "var(--velour-text-muted)" }}
+            >
               {shelf
                 ? `${shelf.shelfBooks.length} ${shelf.shelfBooks.length === 1 ? "book" : "books"}`
                 : "Loading shelf..."}
@@ -34,21 +58,36 @@ const Page = () => {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="rounded-md bg-white/6 px-3 py-2 text-sm text-white hover:bg-white/10"
-            // TODO: wire Add New action
+            className="rounded-md px-3 py-2 text-sm transition"
+            style={{
+              backgroundColor: "var(--velour-accent)",
+              color: "var(--velour-surface)",
+            }}
           >
             Add Book
           </button>
           <button
             type="button"
-            className="rounded-md border border-white/8 px-3 py-2 text-sm text-neutral-300 hover:bg-white/5"
+            className="rounded-md border px-3 py-2 text-sm transition"
+            style={{
+              borderColor: "var(--velour-border)",
+              color: "var(--velour-text-muted)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                "var(--velour-surface-secondary)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                "transparent";
+            }}
           >
             Edit
           </button>
         </div>
       </div>
 
-      <hr className="border-white/6" />
+      <hr style={{ borderColor: "var(--velour-border)" }} />
 
       {isLoading && (
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">

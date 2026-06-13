@@ -24,12 +24,32 @@ const CustomShelves = ({
     <section className="mt-7">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-white">Custom Shelves</h2>
-          <p className="text-sm text-neutral-500">Shelves you created</p>
+          <h2
+            className="text-lg font-semibold"
+            style={{ color: "var(--velour-text)" }}
+          >
+            Custom Shelves
+          </h2>
+          <p className="text-sm" style={{ color: "var(--velour-text-muted)" }}>
+            Shelves you created
+          </p>
         </div>
         <button
           type="button"
-          className="flex items-center gap-3 rounded-md px-2 py-1 text-sm text-neutral-400 transition hover:bg-white/5 hover:text-white"
+          className="flex items-center gap-3 rounded-md px-2 py-1 text-sm transition"
+          style={{ color: "var(--velour-text-muted)" }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+              "var(--velour-surface-tertiary)";
+            (e.currentTarget as HTMLButtonElement).style.color =
+              "var(--velour-text)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor =
+              "transparent";
+            (e.currentTarget as HTMLButtonElement).style.color =
+              "var(--velour-text-muted)";
+          }}
         >
           See all
           <span className="text-xl leading-none">&rsaquo;</span>
@@ -51,7 +71,14 @@ const CustomShelves = ({
           : shelves.map((shelf) => <ShelfCard key={shelf.id} shelf={shelf} />)}
 
         {!loading && shelves.length === 0 && (
-          <div className="flex min-h-40 items-center rounded-xl border border-white/8 bg-[#0d1012]/70 p-5 text-sm text-neutral-400 sm:min-h-47.5">
+          <div
+            className="flex min-h-40 items-center rounded-lg border p-5 text-sm sm:min-h-47.5"
+            style={{
+              backgroundColor: "var(--velour-surface-secondary)",
+              borderColor: "var(--velour-border)",
+              color: "var(--velour-text-muted)",
+            }}
+          >
             No custom shelves yet.
           </div>
         )}
