@@ -6,10 +6,15 @@ import { useParams } from "next/navigation";
 import BookCard from "@/components/book/BookCard";
 import { LuArrowLeft } from "react-icons/lu";
 import Link from "next/link";
+import { Trash } from "lucide-react";
+import RenameShelfPopover from "@/components/sections/shelfs/RenamePop";
+import DeleteShelfModal from "@/components/modals/DeleteShelfModal";
 
 const Page = () => {
   const { shelfId } = useParams<{ shelfId: string }>();
   const { data: shelf, isLoading, error } = useShelf(shelfId);
+
+  if (!shelf) return null;
 
   return (
     <div className="h-full w-full">
@@ -55,36 +60,12 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="rounded-md px-3 py-2 text-sm transition"
-            style={{
-              backgroundColor: "var(--velour-accent)",
-              color: "var(--velour-surface)",
-            }}
-          >
-            Add Book
-          </button>
-          <button
-            type="button"
-            className="rounded-md border px-3 py-2 text-sm transition"
-            style={{
-              borderColor: "var(--velour-border)",
-              color: "var(--velour-text-muted)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                "var(--velour-surface-secondary)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                "transparent";
-            }}
-          >
-            Edit
-          </button>
-        </div>
+        {!shelf?.isSystem && (
+          <div className="flex items-center gap-2">
+            <RenameShelfPopover shelfId={shelf?.id} currentName={shelf?.name} />
+            <DeleteShelfModal shelfId={shelf?.id} shelfName={shelf?.name} />
+          </div>
+        )}
       </div>
 
       <hr style={{ borderColor: "var(--velour-border)" }} />

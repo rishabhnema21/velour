@@ -8,6 +8,7 @@ const BookDrawer = () => {
   const { selectedBookId, closeDrawer, isOpen } = useBookDrawerStore();
 
   const { data: book, isLoading } = useBook(selectedBookId ?? "");
+  const image = book?.smallThumbnail || "/placeholder.webp"
   return (
     <div
       className="fixed inset-y-0 right-0 w-96 z-50 h-full shadow-lg transition-transform duration-300"
@@ -59,7 +60,7 @@ const BookDrawer = () => {
           }}
         >
           <Image
-            src={book?.smallThumbnail as string}
+            src={image}
             alt="book_cover"
             height={1000}
             width={1000}
