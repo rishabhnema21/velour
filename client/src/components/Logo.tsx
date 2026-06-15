@@ -3,19 +3,19 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <div className="shrink-0 rounded-full">
+    <div className="shrink-0 ml-2 rounded-full select-none">
       <Link
         href="/"
         className="text-2xl font-medium tracking-tight flex items-center"
       >
         <Image
-          src="/velour.png"
+          src="/Logo.png"
           alt="logo"
-          height={70}
-          width={70}
+          height={50}
+          width={50}
           className="rounded-full"
         />
-        <h2 className="text-neutral-200">velour.</h2>
+        <h2 className="text-neutral-800  font=[urbanist]">velour.</h2>
       </Link>
     </div>
   );

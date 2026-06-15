@@ -12,7 +12,7 @@ const RecentlyAddedBooks = ({ books, loading }: RecentlyAddedBooksProps) => {
     <section className="mt-7">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-white">Recently Added</h2>
+          <h2 className="text-lg font-semibold" style={{ color: "var(--velour-text)" }}>Recently Added</h2>
           <p className="text-sm text-neutral-500">Your latest additions</p>
         </div>
         <button

@@ -89,7 +89,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
 
     // return a success response with the userbook details
     return res
-      .status(200)
+      .status(201)
       .json({ success: true, message: "Book added to Library successfully" });
   } catch (err) {
     console.error("Error in Adding to library: ", err);

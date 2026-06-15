@@ -1,5 +1,6 @@
 "use client";
 
+import { useAddToLibrary } from "@/hooks/library";
 import { useBook } from "@/hooks/useBook";
 import { useBookDrawerStore } from "@/store/BookDrawerStore";
 import Image from "next/image";
@@ -8,7 +9,10 @@ const BookDrawer = () => {
   const { selectedBookId, closeDrawer, isOpen } = useBookDrawerStore();
 
   const { data: book, isLoading } = useBook(selectedBookId ?? "");
-  const image = book?.smallThumbnail || "/placeholder.webp"
+  const image = book?.smallThumbnail || "/placeholder.webp";
+
+  const addToLibraryMutation = useAddToLibrary();
+
   return (
     <div
       className="fixed inset-y-0 right-0 w-96 z-50 h-full shadow-lg transition-transform duration-300"
@@ -132,13 +136,18 @@ const BookDrawer = () => {
 
         <div className="flex gap-2 pt-2">
           <button
-            className="flex-1 py-2 rounded transition"
+            onClick={() => {
+              if (!book?.id) return;
+              addToLibraryMutation.mutate({ bookId: book?.id });
+            }}
+            disabled= { addToLibraryMutation.isPending }
+            className="flex-1 py-2 hover:bg-neutral-600 rounded transition cursor-pointer"
             style={{
               backgroundColor: "var(--velour-accent)",
               color: "var(--velour-surface)",
             }}
           >
-            Add to Library
+            {addToLibraryMutation.isPending ? "Adding..." : "Add to Library"}
           </button>
           <button
             className="flex-1 py-2 rounded transition"

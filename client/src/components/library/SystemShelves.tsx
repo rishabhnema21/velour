@@ -12,7 +12,7 @@ const SystemShelves = ({ shelves, loading }: SystemShelvesProps) => {
     <section className="mt-8">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-white">Your Shelves</h2>
+          <h2 className="text-lg font-semibold" style={{ color: "var(--velour-text)" }}>Your Shelves</h2>
           <p className="text-sm text-neutral-500">
             Organize your books and track your reading
           </p>
