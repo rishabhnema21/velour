@@ -10,25 +10,25 @@ import axios from "axios";
 import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 type createShelfModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated?: () => void | Promise<void>;
 };
 
 export function CreateShelfModal({
   open,
   onOpenChange,
-  onCreated,
 }: createShelfModalProps) {
   const { getToken } = useAuth();
   const { showToast } = useToast();
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const resetForm = () => {
     setTitle("");
@@ -41,11 +41,7 @@ export function CreateShelfModal({
     onOpenChange(nextOpen);
   };
 
-  useEffect(() => {
-    if (!open) resetForm();
-  }, [open]);
-
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const name = title.trim();
@@ -76,7 +72,7 @@ export function CreateShelfModal({
         message: res.data.message || `${name} is ready for books.`,
       });
 
-      await onCreated?.();
+      queryClient.invalidateQueries({ queryKey: ["library", "overview"] });
       handleOpenChange(false);
     } catch (err) {
       const message = axios.isAxiosError<{ message?: string }>(err)

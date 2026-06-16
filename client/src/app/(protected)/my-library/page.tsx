@@ -7,11 +7,11 @@ import SystemShelves from "@/components/library/SystemShelves";
 import { useLibraryOverview } from "@/hooks/useLibraryOverview";
 
 const Page = () => {
-  const { overview, loading, error, refetch } = useLibraryOverview();
+  const { overview, isLoading, error } = useLibraryOverview();
 
   return (
     <div className="pb-2 md:pb-10">
-      <LibraryHero overview={overview} loading={loading} />
+      <LibraryHero overview={overview} loading={isLoading} />
 
       {error && (
         <div className="mt-6 rounded-xl border border-red-400/20 bg-red-950/30 px-4 py-3 text-sm text-red-100">
@@ -19,13 +19,12 @@ const Page = () => {
         </div>
       )}
 
-      <SystemShelves shelves={overview.defaultShelves} loading={loading} />
+      <SystemShelves shelves={overview.defaultShelves} loading={isLoading} />
       <CustomShelves
         shelves={overview.customShelves}
-        loading={loading}
-        onShelfCreated={refetch}
+        loading={isLoading}
       />
-      <RecentlyAddedBooks books={overview.recentlyAdded} loading={loading} />
+      <RecentlyAddedBooks books={overview.recentlyAdded} loading={isLoading} />
     </div>
   );
 };

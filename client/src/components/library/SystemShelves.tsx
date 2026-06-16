@@ -31,7 +31,7 @@ const SystemShelves = ({ shelves, loading }: SystemShelvesProps) => {
           ? Array.from({ length: 5 }).map((_, index) => (
               <div
                 key={index}
-                className="min-h-44.5 animate-pulse rounded-xl border border-white/8 bg-[#0d1012]/85 p-4 sm:min-h-51.25 sm:p-5"
+                className="min-h-44.5 animate-pulse rounded-xl border border-white/8 bg-[#0d1012]/60 p-4 sm:min-h-51.25 sm:p-5"
               >
                 <div className="h-10 w-10 rounded-full bg-white/10" />
                 <div className="mt-16 h-4 w-2/3 rounded bg-white/10" />

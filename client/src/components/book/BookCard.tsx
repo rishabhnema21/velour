@@ -1,6 +1,7 @@
 "use client";
 
 import { useBookDrawerStore } from "@/store/BookDrawerStore";
+import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 type BookCardProps = {
@@ -23,8 +24,11 @@ const BookCard = ({
   return (
     <div
       onClick={() => openDrawer(id)}
-      className="overflow-hidden p-2 flex flex-col items-center"
+      className="overflow-hidden relative group p-2 flex flex-col items-center"
     >
+      <div className="absolute top-2 right-2">
+        <EllipsisVertical />
+      </div>
       <div className="w-42 h-56">
         <Image
           src={cover}

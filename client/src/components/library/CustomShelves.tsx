@@ -10,13 +10,11 @@ import { CreateShelfModal } from "../modals/CreateShelfModal";
 type CustomShelvesProps = {
   shelves: LibraryShelf[];
   loading: boolean;
-  onShelfCreated?: () => void | Promise<void>;
 };
 
 const CustomShelves = ({
   shelves,
   loading,
-  onShelfCreated,
 }: CustomShelvesProps) => {
   const [isCreateShelfOpen, setIsCreateShelfOpen] = useState(false);
 
@@ -61,7 +59,6 @@ const CustomShelves = ({
         <CreateShelfModal
           open={isCreateShelfOpen}
           onOpenChange={setIsCreateShelfOpen}
-          onCreated={onShelfCreated}
         />
 
         {loading
