@@ -4,12 +4,16 @@ import { useBookDrawerStore } from "@/store/BookDrawerStore";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useMoveModalStore } from "@/store/MoveModalStore";
 type BookCardProps = {
   id: string;
   cover: string;
   title: string;
   authors: string[];
   description: string | null;
+  userBookId?: string;
+  currentShelfIds?: string[];
 };
 
 const BookCard = ({
@@ -17,18 +21,60 @@ const BookCard = ({
   cover,
   title,
   authors,
-  description,
+  userBookId,
+  currentShelfIds,
 }: BookCardProps) => {
   const router = useRouter();
   const { openDrawer } = useBookDrawerStore();
+  const { openModal } = useMoveModalStore();
+  const [menu, setMenu] = useState(false);
   return (
     <div
       onClick={() => openDrawer(id)}
-      className="overflow-hidden relative group p-2 flex flex-col items-center"
+      className="overflow-hidden relative group transition-all duration-200 ease-in cursor-pointer py-1 flex flex-col items-center"
     >
-      <div className="absolute top-2 right-2">
-        <EllipsisVertical />
-      </div>
+      {userBookId && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="absolute hidden group-hover:block top-2 right-7"
+        >
+          <button
+            className="bg-neutral-200/50 text-neutral-50 rounded-full"
+            onClick={() => setMenu((prev) => !prev)}
+          >
+            <EllipsisVertical size={20} />
+          </button>
+
+          {menu && (
+            <div
+              className="absolute cursor-pointer h-15 w-30 right-0 top-6 font-bold z-10 rounded-md border shadow-md"
+              style={{
+                backgroundColor: "var(--velour-surface)",
+                borderColor: "var(--velour-border)",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  openModal(userBookId!, currentShelfIds ?? []);
+                  setMenu(false);
+                }}
+                className="px-4 text-sm w-full text-left hover:bg-neutral-200 mb-1"
+                style={{ color: "var(--velour-text)" }}
+              >
+                Move
+              </button>
+              <hr />
+              <button
+                className="px-4 text-sm w-full hover:bg-neutral-200 text-left"
+                style={{ color: "var(--velour-text)" }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <div className="w-42 h-56">
         <Image
           src={cover}
@@ -39,9 +85,9 @@ const BookCard = ({
           loading="eager"
         />
       </div>
-      <div className="py-2 tracking-tight text-center">
+      <div className="py-1 w-42 tracking-tight text-center">
         <h2
-          className="text-lg font-semibold"
+          className="text-lg font-semibold truncate"
           style={{ color: "var(--velour-text)" }}
         >
           {title}

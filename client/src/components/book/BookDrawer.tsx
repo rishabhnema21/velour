@@ -2,7 +2,9 @@
 
 import { useAddToLibrary } from "@/hooks/library";
 import { useBook } from "@/hooks/useBook";
+import { useLibraryBooks } from "@/hooks/useLibraryOverview";
 import { useBookDrawerStore } from "@/store/BookDrawerStore";
+import { useMoveModalStore } from "@/store/MoveModalStore";
 import Image from "next/image";
 
 const BookDrawer = () => {
@@ -10,8 +12,13 @@ const BookDrawer = () => {
 
   const { data: book, isLoading } = useBook(selectedBookId ?? "");
   const image = book?.smallThumbnail || "/placeholder.webp";
+  const { data: libraryBooks } = useLibraryBooks();
+  const { openModal } = useMoveModalStore();
 
   const addToLibraryMutation = useAddToLibrary();
+  const userBook = libraryBooks?.find((ub) => ub.book.id === book?.id);
+  const isinLibrary = !!userBook;
+  const currentShelfIds = userBook?.shelfBooks.map((s) => s.shelfId) ?? [];
 
   return (
     <div
@@ -138,25 +145,24 @@ const BookDrawer = () => {
           <button
             onClick={() => {
               if (!book?.id) return;
-              addToLibraryMutation.mutate({ bookId: book?.id });
+              if (isinLibrary && userBook) {
+                openModal(userBook.id, currentShelfIds);
+              } else {
+                addToLibraryMutation.mutate({ bookId: book?.id });
+              }
             }}
-            disabled= { addToLibraryMutation.isPending }
+            disabled={addToLibraryMutation.isPending}
             className="flex-1 py-2 hover:bg-neutral-600 rounded transition cursor-pointer"
             style={{
               backgroundColor: "var(--velour-accent)",
               color: "var(--velour-surface)",
             }}
           >
-            {addToLibraryMutation.isPending ? "Adding..." : "Add to Library"}
-          </button>
-          <button
-            className="flex-1 py-2 rounded transition"
-            style={{
-              backgroundColor: "var(--velour-accent)",
-              color: "var(--velour-surface)",
-            }}
-          >
-            Read
+            {addToLibraryMutation.isPending
+              ? "Adding..."
+              : isinLibrary
+                ? "Move to Shelf"
+                : "Add to Library"}
           </button>
         </div>
       </div>

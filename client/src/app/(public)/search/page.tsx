@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import BookCard from "@/components/book/BookCard";
 import { searchBooks } from "@/lib/apifetch/book";
 import { useQuery } from "@tanstack/react-query";
+import { useLibrary } from "@/hooks/library";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -22,6 +23,12 @@ const SearchContent = () => {
     queryFn: () => searchBooks(query),
     enabled: !!query,
   });
+
+  const {data: libraryBooks} = useLibrary();
+
+  const libraryMap = useMemo(() => {
+    return new Map(libraryBooks?.map(ub => [ub.book.id, ub]));
+  }, [libraryBooks]);
 
   return (
     <div
@@ -60,6 +67,7 @@ const SearchContent = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-y-4">
         {books.map((book) => {
           const cover = book.thumbnail || book.smallThumbnail || "/book.jfif";
+          const userbook = libraryMap.get(book.id);
           return (
             <BookCard
               key={book.id}
@@ -68,6 +76,8 @@ const SearchContent = () => {
               title={book.title}
               authors={book.authors}
               description={book.description}
+              userBookId={userbook?.id}
+              currentShelfIds={userbook?.shelfBooks.map(s => s.shelfId) ?? []}
             />
           );
         })}

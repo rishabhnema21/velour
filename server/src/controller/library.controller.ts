@@ -63,9 +63,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
     const shelf = await db
       .select()
       .from(shelves)
-      .where(
-        and(eq(shelves.userId, user.id), eq(shelves.name, "TO BE READ")),
-      )
+      .where(and(eq(shelves.userId, user.id), eq(shelves.name, "TO BE READ")))
       .limit(1);
 
     const existingShelfBook = await db
@@ -109,6 +107,11 @@ export const getLibraryBooks = async (req: Request, res: Response) => {
       where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
       with: {
         book: true,
+        shelfBooks: {
+          columns: {
+            shelfId: true,
+          },
+        },
       },
     });
 
@@ -241,32 +244,32 @@ export const removeFromLibrary: RequestHandler<UserBookParams> = async (
   }
 };
 
-
 export const handleLibraryOverview = async (req: Request, res: Response) => {
   try {
     const user = req.User;
 
-    const shelfOverview = await db.select({
-      id: shelves.id,
-      name: shelves.name,
-      isSystem: shelves.isSystem,
-      createdAt: shelves.createdAt,
-      bookCount: count(shelfBooks.id),
-    })
-    .from(shelves)
-    .leftJoin(shelfBooks, eq(shelves.id, shelfBooks.shelfId))
-    .where(eq(shelves.userId, user.id))
-    .groupBy(shelves.id, shelves.name, shelves.isSystem, shelves.createdAt)
-    .orderBy(desc(shelves.isSystem), asc(shelves.createdAt));
+    const shelfOverview = await db
+      .select({
+        id: shelves.id,
+        name: shelves.name,
+        isSystem: shelves.isSystem,
+        createdAt: shelves.createdAt,
+        bookCount: count(shelfBooks.id),
+      })
+      .from(shelves)
+      .leftJoin(shelfBooks, eq(shelves.id, shelfBooks.shelfId))
+      .where(eq(shelves.userId, user.id))
+      .groupBy(shelves.id, shelves.name, shelves.isSystem, shelves.createdAt)
+      .orderBy(desc(shelves.isSystem), asc(shelves.createdAt));
 
     const recentlyAdded = await db.query.userBooks.findMany({
       where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
-      orderBy: (userBooks, { desc}) => desc(userBooks.createdAt),
+      orderBy: (userBooks, { desc }) => desc(userBooks.createdAt),
       limit: 6,
       with: {
         book: true,
-      }
-    })
+      },
+    });
 
     const formattedShelves = shelfOverview.map((shelf) => ({
       id: shelf.id,
@@ -287,10 +290,9 @@ export const handleLibraryOverview = async (req: Request, res: Response) => {
           authors: item.book.authors,
           thumbnail: item.book.thumbnail,
           smallThumbnail: item.book.smallThumbnail,
-        }))
-      }
-    })
-
+        })),
+      },
+    });
   } catch (err) {
     console.log("Error in getting library overview: ", err);
     return res.status(500).json({
@@ -298,4 +300,4 @@ export const handleLibraryOverview = async (req: Request, res: Response) => {
       message: "Internal Server Error",
     });
   }
-}
+};

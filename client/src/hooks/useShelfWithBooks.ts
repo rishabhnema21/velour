@@ -1,7 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
-import type { Shelf } from "@/types/book";
 import { deleteShelf, renameShelf, shelfFetch } from "@/lib/apifetch/shelf";
 import { useToast } from "@/components/notifications/ToastProvider";
 

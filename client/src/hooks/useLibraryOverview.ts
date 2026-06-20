@@ -3,6 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { getLibraryBooks } from "@/lib/apifetch/library";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -34,7 +35,9 @@ type ApiResponse = {
   message?: string;
 };
 
-const fetchLibraryOverview = async (token: string | null): Promise<LibraryOverview> => {
+const fetchLibraryOverview = async (
+  token: string | null,
+): Promise<LibraryOverview> => {
   const response = await axios.get<ApiResponse>(
     `${API_BASE}/api/library/overview`,
     {
@@ -46,7 +49,13 @@ const fetchLibraryOverview = async (token: string | null): Promise<LibraryOvervi
     throw new Error(response.data.message || "Failed to load your library.");
   }
 
-  return response.data.data ?? { defaultShelves: [], customShelves: [], recentlyAdded: [] };
+  return (
+    response.data.data ?? {
+      defaultShelves: [],
+      customShelves: [],
+      recentlyAdded: [],
+    }
+  );
 };
 
 export const useLibraryOverview = () => {
@@ -59,13 +68,31 @@ export const useLibraryOverview = () => {
       return fetchLibraryOverview(token);
     },
     enabled: isLoaded && !!isSignedIn,
-    staleTime: 1000 * 60 * 2, 
+    staleTime: 1000 * 60 * 2,
   });
 
   return {
-    overview: data ?? { defaultShelves: [], customShelves: [], recentlyAdded: [] },
+    overview: data ?? {
+      defaultShelves: [],
+      customShelves: [],
+      recentlyAdded: [],
+    },
     isLoading,
     error: error ? (error as Error).message : null,
     refetch,
   };
+};
+
+export const useLibraryBooks = () => {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
+
+  return useQuery({
+    queryKey: ["library", "books"],
+    queryFn: async () => {
+      const token = await getToken();
+      return getLibraryBooks(token ?? undefined);
+    },
+    enabled: isLoaded && !!isSignedIn,
+    staleTime: 1000 * 60 * 2,
+  });
 };

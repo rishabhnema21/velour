@@ -43,4 +43,5 @@ export interface UserBook {
   bookId: string;
   createdAt: string;
   book: Book;
+  shelfBooks: { shelfId: string }[];
 }

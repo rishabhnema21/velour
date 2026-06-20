@@ -6,9 +6,9 @@ import { useParams } from "next/navigation";
 import BookCard from "@/components/book/BookCard";
 import { LuArrowLeft } from "react-icons/lu";
 import Link from "next/link";
-import { Trash } from "lucide-react";
 import RenameShelfPopover from "@/components/sections/shelfs/RenamePop";
 import DeleteShelfModal from "@/components/modals/DeleteShelfModal";
+import MoveBookModal from "@/components/modals/MoveBookModal";
 
 const Page = () => {
   const { shelfId } = useParams<{ shelfId: string }>();
@@ -108,11 +108,14 @@ const Page = () => {
                 title={book.title}
                 authors={book.authors || []}
                 description={book.description}
+                userBookId={shelfBook.userBook?.id}
+                currentShelfIds={[shelfId]}
               />
             );
           })}
         </div>
       )}
+      <MoveBookModal />
     </div>
   );
 };
