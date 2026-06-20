@@ -11,38 +11,26 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { CiSearch } from "react-icons/ci";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 
 const Navigation = () => {
   return (
     <nav
-      className="w-[97%] rounded-md font-[urbanist] mt-3 px-3 py-3 flex flex-wrap justify-between items-center gap-3 md:px-4"
+      className="w-full rounded-md font-[urbanist] px-4 py-3 flex flex-wrap justify-between items-center gap-3 md:px-4"
       style={{ color: "var(--velour-text)" }}
     >
       <Logo />
       <SearchBar />
-      <div className="flex shrink-0 items-center gap-3 text-sm sm:text-base">
+      <div className="flex shrink-0 items-center gap-2 text-sm sm:text-base">
         <SignedOut>
-          <SignInButton mode="modal" />
+          <SignInButton mode="modal">
+            <button className="cursor-pointer px-3 py-1 rounded-sm border border-[#333232] text-neutral-800 transition">
+              Sign In
+            </button>
+          </SignInButton>
           <SignUpButton mode="modal">
-            <button
-              className="cursor-pointer px-3 py-1 rounded-sm transition"
-              style={{
-                backgroundColor: "var(--velour-surface-secondary)",
-                color: "var(--velour-text)",
-                border: "1px solid var(--velour-border)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                  "var(--velour-surface-tertiary)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                  "var(--velour-surface-secondary)";
-              }}
-            >
+            <button className="cursor-pointer px-3 py-1 rounded-sm bg-[#202020] text-neutral-200 transition">
               Start Journey
             </button>
           </SignUpButton>

@@ -11,11 +11,11 @@ const Logo = () => {
         <Image
           src="/Logo.png"
           alt="logo"
-          height={50}
-          width={50}
+          height={41}
+          width={41}
           className="rounded-full"
         />
-        <h2 className="text-neutral-800  font=[urbanist]">velour.</h2>
+        <h2 className="text-neutral-800 text-3xl  font=[urbanist]">velour.</h2>
       </Link>
     </div>
   );

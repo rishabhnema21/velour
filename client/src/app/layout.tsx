@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Urbanist, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Urbanist, Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -26,6 +26,13 @@ const urbanist = Urbanist({
   style: ["normal", "italic"],
 });
 
+const serif = Instrument_Serif({
+  variable: "--serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"]
+});
+
 export const metadata: Metadata = {
   title: "Velour",
   description: "Velour - Live inside your books",
@@ -40,7 +47,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={cn("font-sans", inter.variable)}>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${urbanist.variable} ${serif.variable} antialiased`}
         >
           <ReactQueryProvider>
             <ToastProvider>{children}</ToastProvider>

@@ -20,17 +20,19 @@ const SearchBar = () => {
     >
       <input
         type="text"
-        placeholder="Search for your next read"
+        placeholder="Try Searching for Raag Darbari"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="h-11 w-full pl-4 pr-11 text-sm bg-neutral-300/60 rounded-sm text-neutral-800 outline-none placeholder:text-neutral-500"
+        className="py-2 w-full pl-4 pr-11  border border-neutral-300 shadow-md rounded-sm text-neutral-800 font-semibold outline-none placeholder:text-neutral-800"
       />
       <button
         type="submit"
-        className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-neutral-800 transition hover:bg-white/10 hover:text-neutral-900 pointer-cursor"
+        className="absolute right-2 top-1/2 bg-grey-100 border border-neutral-200 grid px-3 py-1 -translate-y-1/2 place-items-center rounded-md text-neutral-800 transition hover:700/80 hover:text-neutral-900 pointer-cursor"
         aria-label="Search"
       >
-        <CiSearch className="h-5 w-5" />
+        <kbd className="">
+          <span className="mr-1">⌘</span>K
+        </kbd>
       </button>
     </form>
   );

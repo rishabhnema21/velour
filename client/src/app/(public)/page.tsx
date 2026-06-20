@@ -6,7 +6,7 @@ const Home = async () => {
   const { userId } = await auth();
   if (userId) redirect("/my-library");
   return (
-    <div className='bg-[#111] min-h-screen w-full pt-20 overflow-hidden'>
+    <div className='bg-[#fdfcfb] min-h-screen w-full pt-20 overflow-hidden'>
       <Hero />
       {/* <Features /> */}
     </div>
