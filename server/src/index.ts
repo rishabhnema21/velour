@@ -6,7 +6,7 @@ import authRoutes from "./routes/authRoutes";
 import bookRoutes from "./routes/book.routes";
 import libraryRoutes from "./routes/library.route";
 import shelvesRoutes from "./routes/shelves.route";
-import highlightRoutes from "./routes/highlight.route;
+import highlightRoutes from "./routes/highlight.route";
 
 const app = express();
 app.use(cors({
