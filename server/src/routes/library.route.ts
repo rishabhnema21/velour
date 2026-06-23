@@ -8,6 +8,7 @@ import {
   updateBookShelf,
 } from "../controller/library.controller";
 import { attachUser } from "../middleware/attatchUser";
+import { createHighlight } from "../controller/highlight.controller";
 const router = express.Router();
 
 router.use(requireAuth(), attachUser);
@@ -23,6 +24,9 @@ router.get("/",  getLibraryBooks);
 
 // moving a book between shelves.
 router.post("/books/:userBookId/shelves", updateBookShelf);
+
+// add highlight to the userbook in library
+router.post("/books/:userBookId/highlights", createHighlight);
 
 // remove a book from the library.
 router.delete("/books/:userBookId", removeFromLibrary,);
