@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { attachUser } from "../middleware/attatchUser";
 import { requireAuth } from "@clerk/express";
-import { createHighlight, getAllHighlights, updateHighlights } from "../controller/highlight.controller";
+import { createHighlight, deleteHighlights, getAllHighlights, updateHighlights } from "../controller/highlight.controller";
 
 const router = Router();
 router.use(requireAuth(), attachUser);
@@ -10,5 +10,7 @@ router.use(requireAuth(), attachUser);
 router.get("/", getAllHighlights);
 // update highlights by id
 router.patch("/:highlightId", updateHighlights);
+// delete highlights by id
+router.delete("/:highlightId", deleteHighlights);
 
 export default router;

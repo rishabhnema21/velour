@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm";
 type createHighlightParams = {
   userBookId: string;
 };
-type updateHighlightParams = {
+type HighlightParams = {
   highlightId: string;
 };
 
@@ -92,7 +92,7 @@ export const getAllHighlights = async (req: Request, res: Response) => {
   }
 };
 
-export const updateHighlights: RequestHandler<updateHighlightParams> = async (
+export const updateHighlights: RequestHandler<HighlightParams> = async (
   req,
   res,
 ) => {
@@ -143,3 +143,21 @@ export const updateHighlights: RequestHandler<updateHighlightParams> = async (
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+export const deleteHighlights: RequestHandler<HighlightParams> = async (req, res) => {
+    const user = req.User;
+    try {
+        const { highlightId } = req.params;
+        if (!highlightId) {
+            return res.status(400).json({success: false, message: "Highlight id is required"});
+        }
+        const [deletedHighlight] = await db.delete(highlights).where(and(eq(highlights.id, highlightId), eq(highlights.userId, user.id))).returning();
+        if (!deletedHighlight) {
+            return res.status(404).json({success: false, message: "Highlight not found"});
+        }
+        return res.status(200).json({success: true, message: "Highlight deleted successfully"});
+    } catch(err) {
+        console.log("Failed to delete Highlight", err);
+        return res.status(500).json({success: false, message: "Internal Server Error"});
+    }
+}
