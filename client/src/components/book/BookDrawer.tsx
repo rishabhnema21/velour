@@ -4,6 +4,7 @@ import { useAddToLibrary } from "@/hooks/library";
 import { useBook } from "@/hooks/useBook";
 import { useLibraryBooks } from "@/hooks/useLibraryOverview";
 import { useBookDrawerStore } from "@/store/BookDrawerStore";
+import { useHighlightModalStore } from "@/store/HighlightModalStore";
 import { useMoveModalStore } from "@/store/MoveModalStore";
 import Image from "next/image";
 
@@ -14,6 +15,7 @@ const BookDrawer = () => {
   const image = book?.smallThumbnail || "/placeholder.webp";
   const { data: libraryBooks } = useLibraryBooks();
   const { openModal } = useMoveModalStore();
+  const { openModal: openHighlightModal } = useHighlightModalStore();
 
   const addToLibraryMutation = useAddToLibrary();
   const userBook = libraryBooks?.find((ub) => ub.book.id === book?.id);
@@ -164,6 +166,14 @@ const BookDrawer = () => {
                 ? "Move to Shelf"
                 : "Add to Library"}
           </button>
+
+          {(isinLibrary && userBook) && (
+            <button onClick={() => {
+              openHighlightModal(userBook.id)
+            }} className="flex-1 py-2 hover:bg-neutral-800 hover:text-neutral-200 rounded transition cursor-pointer border border-neutral-700 text-neutral-800">
+              Add Highlight
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import { useAuth } from "@clerk/nextjs";
 import { deleteShelf, renameShelf, shelfFetch } from "@/lib/apifetch/shelf";
 import { useToast } from "@/components/notifications/ToastProvider";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 type ApiResponse<T> = {
   success: boolean;

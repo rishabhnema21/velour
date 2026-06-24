@@ -12,6 +12,7 @@ import { RiDoubleQuotesL } from "react-icons/ri";
 import BookDrawer from "@/components/book/BookDrawer";
 import Logo from "@/components/Logo";
 import SearchBar from "@/components/SearchBar";
+import HighlightModal from "@/components/modals/HighlightModal";
 
 const navItems = [
   { label: "Library", href: "/my-library", icon: IoBookOutline },
@@ -211,6 +212,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <BookDrawer />
+      <HighlightModal />
     </div>
   );
 };
