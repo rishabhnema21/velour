@@ -16,6 +16,15 @@ export type Highlight = {
   note: string | null;
   pageNumber: number | null;
   createdAt: string;
+  userBook?: {
+    id: string;
+    book: {
+      id: string;
+      title: string;
+      authors: string[] | null;
+      smallThumbnail?: string | null;
+    };
+  };
 };
 
 export const addHighlight = async (
@@ -38,3 +47,13 @@ export const addHighlight = async (
 
   return response.data
 };
+
+export const fetchHighlight = async (token: string) => {
+  const res = await axios.get<ApiResponse<Highlight[]>>(`${API_BASE}/api/highlights`, { headers: { "Authorization": `Bearer ${token}` } });
+  const response = res.data;
+  if (!response.success) {
+    throw new Error(response.message || "Failed to Fetch Highlights");
+  }
+
+  return response.data;
+}

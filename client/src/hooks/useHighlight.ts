@@ -1,7 +1,7 @@
 import { useToast } from "@/components/notifications/ToastProvider";
-import { addHighlight } from "@/lib/apifetch/highlight";
+import { addHighlight, fetchHighlight } from "@/lib/apifetch/highlight";
 import { useAuth } from "@clerk/nextjs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type ApiResponse<T> = {
   success: boolean;
@@ -47,3 +47,16 @@ export const useAddHighlight = () => {
         },
     });
 }
+
+export const useFetchHighlight = () => {
+    const { getToken, isLoaded, isSignedIn } = useAuth();
+    return useQuery({
+        queryKey: ["highlights"],
+        queryFn: async () => {
+            const token = await getToken();
+            if (!token) throw new Error("You must be signed in to fetch highlights.");
+            return fetchHighlight(token);
+        },
+        enabled: !!isLoaded && !!isSignedIn,
+    })
+};
