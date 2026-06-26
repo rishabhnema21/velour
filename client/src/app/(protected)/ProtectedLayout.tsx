@@ -45,7 +45,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      className="min-h-screen font-[urbanist]"
+      className="min-h-screen font-[urbanist] selection:bg-[#FFDE64]"
       style={{
         backgroundColor: "var(--velour-surface)",
         color: "var(--velour-text)",

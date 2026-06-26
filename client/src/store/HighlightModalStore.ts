@@ -1,17 +1,25 @@
 import { create } from "zustand";
+import type { Highlight } from "@/lib/apifetch/highlight";
 
 interface HighlightModalState {
-    isOpen: boolean;
-    userBookId: string | null;
-    setOpen: (open: boolean) => void;
-    openModal: (userBookId: string) => void;
-    closeModal: () => void;
+  isOpen: boolean;
+  mode: "create" | "edit";
+  userBookId: string | null;
+  editingHighlight: Highlight | null;
+  openCreateModal: (userBookId: string) => void;
+  openEditModal: (highlight: Highlight) => void;
+  closeModal: () => void;
 }
 
 export const useHighlightModalStore = create<HighlightModalState>((set) => ({
-    isOpen: false,
-    userBookId: null,
-    setOpen: (open) => set({ isOpen: open }),
-    openModal: (userBookId) => set({ isOpen: true, userBookId }),
-    closeModal: () => set({ isOpen: false, userBookId: null }),
+  isOpen: false,
+  mode: "create",
+  userBookId: null,
+  editingHighlight: null,
+  openCreateModal: (userBookId) =>
+    set({ isOpen: true, mode: "create", userBookId, editingHighlight: null }),
+  openEditModal: (highlight) =>
+    set({ isOpen: true, mode: "edit", editingHighlight: highlight, userBookId: highlight.userBookId }),
+  closeModal: () =>
+    set({ isOpen: false, mode: "create", userBookId: null, editingHighlight: null }),
 }));

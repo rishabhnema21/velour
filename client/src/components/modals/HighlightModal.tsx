@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useHighlightModalStore } from "@/store/HighlightModalStore";
 
@@ -14,7 +14,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAddHighlight } from "@/hooks/useHighlight";
+import { useAddHighlight, useEditHighlight } from "@/hooks/useHighlight";
 
 type HighlightForm = {
   quote: string;
@@ -29,10 +29,25 @@ const initialForm: HighlightForm = {
 };
 
 const HighlightModal = () => {
-  const { isOpen, userBookId, closeModal } = useHighlightModalStore();
-  const { isPending, mutate } = useAddHighlight();
+  const { isOpen, mode, userBookId, editingHighlight, closeModal } = useHighlightModalStore();
+  const { isPending: isAdding, mutate: addMutate } = useAddHighlight();
+  const { isPending: isEditing, mutate: editMutate } = useEditHighlight();
+
+  const isPending = isAdding || isEditing;
 
   const [form, setForm] = useState<HighlightForm>(initialForm);
+
+  useEffect(() => {
+    if (mode === "edit" && editingHighlight) {
+      setForm({
+        quote: editingHighlight.quote,
+        note: editingHighlight.note ?? "",
+        pageNumber: editingHighlight.pageNumber?.toString() ?? "",
+      });
+    } else if (isOpen) {
+      setForm(initialForm);
+    }
+  }, [mode, editingHighlight, isOpen]);
 
   const updateField = (field: keyof HighlightForm, value: string) => {
     setForm((prev) => ({
@@ -50,21 +65,27 @@ const HighlightModal = () => {
     e.preventDefault();
 
     if (!form.quote.trim()) return;
-    if (!userBookId) return;
 
-    mutate(
-      {
-        userBookId,
-        quote: form.quote.trim(),
-        note: form.note?.trim(),
-        pageNumber: form.pageNumber ? Number(form.pageNumber) : undefined,
-      },
-      {
-        onSuccess: () => {
-          handleClose();
+    const note = form.note?.trim() || undefined;
+    const pageNumber = form.pageNumber ? Number(form.pageNumber) : undefined;
+
+    if (mode === "edit" && editingHighlight) {
+      editMutate(
+        {
+          highlightId: editingHighlight.id,
+          quote: form.quote.trim(),
+          note,
+          pageNumber,
         },
-      },
-    );
+        { onSuccess: handleClose },
+      );
+    } else {
+      if (!userBookId) return;
+      addMutate(
+        { userBookId, quote: form.quote.trim(), note, pageNumber },
+        { onSuccess: handleClose },
+      );
+    }
   };
 
   return (
@@ -78,7 +99,7 @@ const HighlightModal = () => {
         <form onSubmit={handleSubmit}>
           <ModalHeader className="flex flex-row items-center justify-between">
             <ModalTitle className="text-neutral-800">
-              Create Highlight
+              {mode === "edit" ? "Edit Highlight" : "Create Highlight"}
             </ModalTitle>
           </ModalHeader>
 
@@ -133,7 +154,7 @@ const HighlightModal = () => {
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Create"}
+              {isPending ? "Saving..." : mode === "edit" ? "Save Changes" : "Create"}
             </Button>
           </ModalFooter>
         </form>

@@ -34,7 +34,7 @@ const serif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Velour",
+  title: "Velour | Live Inside Your Books",
   description: "Velour - Live inside your books",
 };
 

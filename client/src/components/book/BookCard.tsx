@@ -28,7 +28,7 @@ const BookCard = ({
   const router = useRouter();
   const { openDrawer } = useBookDrawerStore();
   const { openModal } = useMoveModalStore();
-  const { openModal: openHighlightModal } = useHighlightModalStore();
+  const { openCreateModal: openHighlightModal } = useHighlightModalStore();
   const [menu, setMenu] = useState(false);
   return (
     <div

@@ -37,7 +37,12 @@ export const addHighlight = async (
   const res = await axios.post<ApiResponse<Highlight>>(
     `${API_BASE}/api/library/books/${userBookId}/highlights`,
     { quote, note, pageNumber },
-    { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` } },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
   );
 
   const response = res.data;
@@ -45,15 +50,55 @@ export const addHighlight = async (
     throw new Error(response.message || "Failed to Add Highlight");
   }
 
-  return response.data
+  return response.data;
 };
 
 export const fetchHighlight = async (token: string) => {
-  const res = await axios.get<ApiResponse<Highlight[]>>(`${API_BASE}/api/highlights`, { headers: { "Authorization": `Bearer ${token}` } });
+  const res = await axios.get<ApiResponse<Highlight[]>>(
+    `${API_BASE}/api/highlights`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
   const response = res.data;
   if (!response.success) {
     throw new Error(response.message || "Failed to Fetch Highlights");
   }
 
   return response.data;
+};
+
+export const editHighlight = async ({
+  token,
+  highlightId,
+  quote,
+  note,
+  pageNumber,
+}: {
+  token: string;
+  highlightId: string;
+  quote: string;
+  note?: string;
+  pageNumber?: number;
+}) => {
+  const res = await axios.patch(
+    `${API_BASE}/api/highlights/${highlightId}`,
+    { quote, note, pageNumber },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  const response = res.data;
+  if (!response.success) {
+    throw new Error(response.message || "Failed to Edit highlight");
+  }
+
+  return response.data;
+};
+
+export const deleteHighlight = async (token: string, highlightId: string) => {
+  const res = await axios.delete(`${API_BASE}/api/highlights/${highlightId}`, { headers: { Authorization: `Bearer ${token}` } },)
+
+  const response = res.data;
+
+  if (!response.success) {
+    throw new Error(response.message || "Failed to delete Highlight");
+  }
 }

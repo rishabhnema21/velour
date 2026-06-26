@@ -15,7 +15,7 @@ const BookDrawer = () => {
   const image = book?.smallThumbnail || "/placeholder.webp";
   const { data: libraryBooks } = useLibraryBooks();
   const { openModal } = useMoveModalStore();
-  const { openModal: openHighlightModal } = useHighlightModalStore();
+  const { openCreateModal: openHighlightModal } = useHighlightModalStore();
 
   const addToLibraryMutation = useAddToLibrary();
   const userBook = libraryBooks?.find((ub) => ub.book.id === book?.id);
