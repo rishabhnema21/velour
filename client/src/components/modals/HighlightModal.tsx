@@ -95,7 +95,7 @@ const HighlightModal = () => {
         if (!open) handleClose();
       }}
     >
-      <ModalContent className="sm:max-w-lg">
+      <ModalContent className="sm:max-w-lg bg-neutral-200">
         <form onSubmit={handleSubmit}>
           <ModalHeader className="flex flex-row items-center justify-between">
             <ModalTitle className="text-neutral-800">

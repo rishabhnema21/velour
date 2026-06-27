@@ -8,7 +8,6 @@ export const getBooks = async (req: Request, res: Response) => {
   try {
     // Extract the search query from the request query parameters
     const query = req.query.q as string;
-    console.log("Search query: ", query);
 
     if (!query) {
       return res.status(400).json({ message: "Search query is required" });
@@ -21,7 +20,6 @@ export const getBooks = async (req: Request, res: Response) => {
       ilike(books.description, `%${query}%`),
     );
 
-    console.log("searching books in db");
 
     const existingBooks = await db.select().from(books).where(searchCondition);
 
@@ -32,7 +30,6 @@ export const getBooks = async (req: Request, res: Response) => {
       });
     }
 
-    console.log("searching in google books api");
 
     // If no books are in DB, call Google Books API
     const googleSearchResult = await searchInGoogleBooks(query);
@@ -50,13 +47,6 @@ export const getBooks = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "No Books Found" });
     }
 
-    console.log(
-      "google books api search completed, this is result: ",
-      googleSearchResult,
-    );
-    console.log(
-      "mapping google books api result to our db schema and inserting into db if not exists",
-    );
     // Map Google Books API response to our database schema
 
     const booksToInsert = filteredResult.map((item: any) => ({
@@ -78,7 +68,7 @@ export const getBooks = async (req: Request, res: Response) => {
       )?.identifier,
     }));
 
-    console.log("inserting books to db");
+    
 
     // Insert extracted book into the database's books table and ignore duplicates based on googleBooksId
     await db
@@ -86,15 +76,11 @@ export const getBooks = async (req: Request, res: Response) => {
       .values(booksToInsert)
       .onConflictDoNothing({ target: books.googleBooksId });
 
-    console.log(
-      "books inserted to db, fetching the inserted records to return to client",
-    );
 
     //   Fetch the books again to get the inserted records with their generated IDs. This ensures we return the complete book data, including the database-generated ID, to the client.
 
     const resultedBooks = await db.select().from(books).where(searchCondition);
 
-    console.log("resulted books: ", resultedBooks);
 
     return res.status(200).json({
       success: true,

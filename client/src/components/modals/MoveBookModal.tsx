@@ -39,7 +39,7 @@ const MoveBookModal = () => {
         if (!open) closeModal();
       }}
     >
-      <ModalContent className="w-full max-w-3xl">
+      <ModalContent className="w-full max-w-3xl bg-neutral-200">
         <ModalHeader>
           <ModalTitle>
             <span className="text-neutral-800">

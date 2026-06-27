@@ -15,7 +15,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
         .json({ success: false, message: "Book ID is required" });
     }
 
-    console.log("Book ID from request body:", bookId);
+  
     // if user is found, search for the book in the database using the book id
 
     const book = await db
@@ -102,7 +102,7 @@ export const addToLibrary = async (req: Request, res: Response) => {
 export const getLibraryBooks = async (req: Request, res: Response) => {
   try {
     const user = req.User;
-    console.log(user?.id);
+
     const library = await db.query.userBooks.findMany({
       where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
       with: {

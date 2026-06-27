@@ -206,7 +206,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
 
       {/* content */}
       <div className="pt-18 pb-20 md:pb-6 md:pl-48 px-4 md:px-0">
-        <div className="px-4 md:px-6 lg:px-8">
+        <div className="px-1 md:px-6 lg:px-8">
           <main>{children}</main>
         </div>
       </div>

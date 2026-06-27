@@ -9,24 +9,24 @@ const Hero = () => {
       <div className="px-1 md:px-4 h-full">
         <div className="flex flex-col h-full md:flex-row justify-between items-center">
           <div className="font-[urbanist] h-full w-full px-4">
-            <div className=" tracking-tight pt-9 pb-5 md:py-6 text-5xl font-semibold md:text-6xl">
-              <h1 className="text-neutral-800 leading-14 capitalize">
+            <div className=" tracking-tight pt-9 pb-5 md:py-6 text-4xl font-semibold md:text-6xl">
+              <h1 className="text-neutral-800 md:leading-14 capitalize">
                 The person you <span className="text-neutral-600">Become</span>{" "}
                 starts with what you{" "}
                 <span className="text-neutral-600">read</span>.
               </h1>
-              <h2 className="italic leading-12 w-[90%] font-extralight font-[serif] text-5xl mt-2 tracking-tighter text-neutral-700">
+              <h2 className="italic md:leading-12 w-full md:w-[90%] font-extralight font-[serif] text-2xl md:text-5xl mt-2 tracking-tighter text-neutral-700">
                 Build a library of insights, not just a collection of books.
               </h2>
             </div>
 
-            <div className="tracking-normal mt-5">
-              <button className="bg-neutral-800 px-8 py-2 text-neutral-200 rounded-sm">
+            <div className="tracking-normal md:mt-5">
+              <button className="bg-neutral-800 px-5 md:px-8 py-1 md:py-2 text-neutral-200 rounded-sm">
                 Watch Demo
               </button>
             </div>
 
-            <div className="text-xl mt-5">
+            <div className="md:text-xl mt-5 z-10 relative">
               For curious readers, lifelong learners, and thoughtful minds.
             </div>
           </div>

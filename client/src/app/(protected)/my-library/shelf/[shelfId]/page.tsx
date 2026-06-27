@@ -88,7 +88,7 @@ const Page = () => {
       )}
 
       {!isLoading && shelf && (
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
           {shelf.shelfBooks.length === 0 && (
             <div className="col-span-full rounded-md border border-white/8 bg-[#0d1012]/70 p-6 text-sm text-neutral-400">
               No books in this shelf yet.

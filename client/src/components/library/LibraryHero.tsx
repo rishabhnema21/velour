@@ -12,7 +12,6 @@ const LibraryHero = ({ overview, loading }: LibraryHeroProps) => {
     (total, shelf) => total + shelf.bookCount,
     0,
   );
-  // const heroCover = "/library.jfif";
 
   return (
     <section className="relative min-h-52.5 overflow-hidden rounded-md border border-white/8 bg-neutral-300 sm:min-h-57.5">
@@ -25,10 +24,10 @@ const LibraryHero = ({ overview, loading }: LibraryHeroProps) => {
       />
       <div className="absolute inset-0" />
       <div className="relative flex min-h-52.5 flex-col justify-center px-5 py-8 sm:min-h-57.5 sm:px-8 md:px-16">
-        <h1 className="max-w-xl text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl md:text-6xl text-shadow-2xs">
+        <h1 className="w-full md:max-w-xl text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl md:text-6xl text-shadow-2xs">
           My Library
         </h1>
-        <div className="text-end w-[25vw]">
+        <div className="text-start md:text-end md:w-[25vw]">
           <blockquote className="text-neutral-200 mt-3">To understand yourself is the beginning of wisdom.</blockquote>
           <p className=" text-neutral-200 mr-4">— J. Krishnamurti</p>
         </div>
