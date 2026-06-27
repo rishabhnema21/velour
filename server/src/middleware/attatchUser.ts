@@ -22,7 +22,6 @@ export const attachUser = async (
       });
     }
 
-    console.log("[attachUser] Clerk ID:", clerkId);
 
     const user = await db
       .select()
@@ -30,11 +29,10 @@ export const attachUser = async (
       .where(eq(users.clerkUserId, clerkId))
       .limit(1);
 
-    console.log("[attachUser] Query Result:", user);
 
     if (user.length === 0) {
       console.warn(
-        `[attachUser] No user found for clerk_user_id=${clerkId}`
+        `[attachUser] No user found`
       );
 
       return res.status(404).json({

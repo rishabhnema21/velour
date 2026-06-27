@@ -8,12 +8,6 @@ if (!config.dbUrl) {
   throw new Error("DB_URL is not set in env");
 }
 
-console.log("DB URL: ", config.dbUrl);
-
-console.log("Connecting to database...");
-
 const sql = neon(config.dbUrl);
 
 export const db = drizzle(sql, { schema });
-
-console.log("Database connected successfully");
