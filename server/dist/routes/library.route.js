@@ -1,11 +1,21 @@
 import express from "express";
 import { requireAuth } from "@clerk/express";
-import { addToLibrary, getLibraryBooks, removeFromLibrary, updateBookShelf, } from "../controller/library.controller";
+import { addToLibrary, getLibraryBooks, handleLibraryOverview, removeFromLibrary, updateBookShelf, } from "../controller/library.controller";
 import { attachUser } from "../middleware/attatchUser";
+import { createHighlight } from "../controller/highlight.controller";
 const router = express.Router();
-router.post("/", requireAuth(), addToLibrary); // add a book to the library
-router.get("/", requireAuth(), attachUser, getLibraryBooks); // get all books in the library of the user.
-router.post("/books/:userBookId/shelves", requireAuth(), attachUser, updateBookShelf); // moving a book between shelves.
-router.delete("/books/:userBookId", requireAuth(), attachUser, removeFromLibrary); // remove a book from the library.
+router.use(requireAuth(), attachUser);
+// add a book to the library
+router.post("/", addToLibrary);
+// to have an overview of the library and its shelves
+router.get("/overview", handleLibraryOverview);
+// get all books in the library of the user.
+router.get("/", getLibraryBooks);
+// moving a book between shelves.
+router.post("/books/:userBookId/shelves", updateBookShelf);
+// add highlight to the userbook in library
+router.post("/books/:userBookId/highlights", createHighlight);
+// remove a book from the library.
+router.delete("/books/:userBookId", removeFromLibrary);
 export default router;
 //# sourceMappingURL=library.route.js.map

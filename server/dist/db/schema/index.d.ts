@@ -4,4 +4,5 @@ export * from "./shelves";
 export * from "./userBooks";
 export * from "./shelf_books";
 export * from "./relations";
+export * from "./highlight";
 //# sourceMappingURL=index.d.ts.map

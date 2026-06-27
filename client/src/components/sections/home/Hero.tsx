@@ -39,6 +39,7 @@ const Hero = () => {
                 alt="image"
                 width={2000}
                 height={1980}
+                loading="eager"
                 className=""
               />
             </div>

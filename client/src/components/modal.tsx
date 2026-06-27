@@ -118,6 +118,7 @@ const ModalClose = ({
 type ModalContentProps = {
 	children: React.ReactNode;
 	className?: string;
+	style?: React.CSSProperties;
 	drawerProps?: React.ComponentProps<typeof DrawerContent>;
 	popoverProps?: React.ComponentProps<typeof DialogContent>;
 };
@@ -125,6 +126,7 @@ type ModalContentProps = {
 const ModalContent = ({
 	className,
 	children,
+	style,
 	drawerProps,
 	popoverProps,
 }: ModalContentProps) => {
@@ -133,7 +135,7 @@ const ModalContent = ({
 	const props = isMobile ? drawerProps : popoverProps;
 
 	return (
-		<Component className={className} {...props}>
+		<Component className={className} style={style} {...props}>
 			{children}
 		</Component>
 	);

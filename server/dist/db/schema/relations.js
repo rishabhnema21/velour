@@ -4,9 +4,11 @@ import { shelves } from "./shelves";
 import { users } from "./user";
 import { books } from "./books";
 import { shelfBooks } from "./shelf_books";
+import { highlights } from "./highlight";
 export const userRelations = relations(users, ({ many }) => ({
     userBooks: many(userBooks),
     shelves: many(shelves),
+    highlights: many(highlights),
 }));
 export const booksRelations = relations(books, ({ many }) => ({
     userBooks: many(userBooks),
@@ -21,6 +23,7 @@ export const userBookRelations = relations(userBooks, ({ one, many }) => ({
         references: [books.id],
     }),
     shelfBooks: many(shelfBooks),
+    highlights: many(highlights),
 }));
 export const shelvesRelations = relations(shelves, ({ one, many }) => ({
     user: one(users, {
@@ -38,5 +41,15 @@ export const shelfBooksRelations = relations(shelfBooks, ({ one }) => ({
         fields: [shelfBooks.userBookId],
         references: [userBooks.id],
     }),
+}));
+export const highlightRelations = relations(highlights, ({ one }) => ({
+    user: one(users, {
+        fields: [highlights.userId],
+        references: [users.id],
+    }),
+    userBook: one(userBooks, {
+        fields: [highlights.userBookId],
+        references: [userBooks.id],
+    })
 }));
 //# sourceMappingURL=relations.js.map

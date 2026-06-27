@@ -17,7 +17,7 @@ export const getBooks = async (req, res) => {
         if (existingBooks.length > 0) {
             return res.status(200).json({
                 success: true,
-                books: existingBooks,
+                data: existingBooks,
             });
         }
         console.log("searching in google books api");
@@ -62,8 +62,8 @@ export const getBooks = async (req, res) => {
         const resultedBooks = await db.select().from(books).where(searchCondition);
         console.log("resulted books: ", resultedBooks);
         return res.status(200).json({
-            message: "Books fetched and stored successfully",
-            books: resultedBooks,
+            success: true,
+            data: resultedBooks,
         });
     }
     catch (err) {
@@ -81,7 +81,7 @@ export const getOneBook = async (req, res) => {
         if (!book || book.length === 0) {
             return res.status(404).json({ message: "Book not found" });
         }
-        return res.status(200).json({ success: true, book: book[0] });
+        return res.status(200).json({ success: true, data: book[0] });
     }
     catch (err) {
         console.log("Error fetching book: ", err);

@@ -4,6 +4,7 @@
 /server/node_modules
 
 devjournal.md
+PRODUCT_BRIEF.md
 
 # Environment variables and secrets
 .env

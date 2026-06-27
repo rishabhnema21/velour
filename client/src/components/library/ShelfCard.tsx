@@ -60,6 +60,7 @@ const ShelfCard = ({ shelf }: ShelfCardProps) => {
             src="/placeholder.webp"
             alt="placeholder"
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
           />
         </div>

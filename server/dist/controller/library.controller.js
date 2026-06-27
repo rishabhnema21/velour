@@ -1,36 +1,16 @@
 import { db } from "../db";
-import { books, shelfBooks, shelves, userBooks, users } from "../db/schema";
-import { and, eq, inArray } from "drizzle-orm";
+import { books, shelfBooks, shelves, userBooks } from "../db/schema";
+import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
 export const addToLibrary = async (req, res) => {
     try {
-        // extracting user's clerk id and book id from the request body
+        const user = req.User;
         const { bookId } = req.body;
-        const auth = req.auth();
-        const clerkId = "userId" in auth ? auth.userId : null;
-        if (!clerkId) {
-            return res.status(401).json({ success: false, message: "Unauthorized" });
-        }
-        console.log("Clerk ID from token:", clerkId);
         if (!bookId) {
             return res
                 .status(400)
                 .json({ success: false, message: "Book ID is required" });
         }
         console.log("Book ID from request body:", bookId);
-        // searching for the user in the database using the clerk id
-        console.log("Searching for the user");
-        const user = await db
-            .select()
-            .from(users)
-            .where(eq(users.clerkUserId, clerkId))
-            .limit(1);
-        // if user is not found, return and error response
-        if (!user || user.length === 0) {
-            return res
-                .status(404)
-                .json({ success: false, message: "User not found" });
-        }
-        console.log("User found: ", user[0].id);
         // if user is found, search for the book in the database using the book id
         const book = await db
             .select()
@@ -47,7 +27,7 @@ export const addToLibrary = async (req, res) => {
         const userBook = await db
             .select()
             .from(userBooks)
-            .where(and(eq(userBooks.userId, user[0].id), eq(userBooks.bookId, book[0].id)))
+            .where(and(eq(userBooks.userId, user.id), eq(userBooks.bookId, book[0].id)))
             .limit(1);
         let userBookId;
         // if it already exists, save it in a variable
@@ -58,7 +38,7 @@ export const addToLibrary = async (req, res) => {
             const insertResult = await db
                 .insert(userBooks)
                 .values({
-                userId: user[0].id,
+                userId: user.id,
                 bookId: book[0].id,
             })
                 .returning();
@@ -68,7 +48,7 @@ export const addToLibrary = async (req, res) => {
         const shelf = await db
             .select()
             .from(shelves)
-            .where(and(eq(shelves.userId, user[0].id), eq(shelves.name, "TO BE READ")))
+            .where(and(eq(shelves.userId, user.id), eq(shelves.name, "TO BE READ")))
             .limit(1);
         const existingShelfBook = await db
             .select()
@@ -84,7 +64,7 @@ export const addToLibrary = async (req, res) => {
         }
         // return a success response with the userbook details
         return res
-            .status(200)
+            .status(201)
             .json({ success: true, message: "Book added to Library successfully" });
     }
     catch (err) {
@@ -103,6 +83,11 @@ export const getLibraryBooks = async (req, res) => {
             where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
             with: {
                 book: true,
+                shelfBooks: {
+                    columns: {
+                        shelfId: true,
+                    },
+                },
             },
         });
         return res.status(200).json({ success: true, data: library });
@@ -133,6 +118,15 @@ export const updateBookShelf = async (req, res) => {
                 .status(404)
                 .json({ success: false, message: "Shelf Not Found" });
         }
+        const userbook = await db.query.userBooks.findFirst({
+            where: (userBooks, { eq, and }) => and(eq(userBooks.id, userBookId), eq(userBooks.userId, user.id)),
+        });
+        if (!userbook) {
+            return res.status(404).json({
+                success: false,
+                message: "UserBook not found",
+            });
+        }
         if (shelf.isSystem) {
             const systemShelves = await db
                 .select({ id: shelves.id })
@@ -149,9 +143,7 @@ export const updateBookShelf = async (req, res) => {
             .insert(shelfBooks)
             .values({ shelfId, userBookId })
             .onConflictDoNothing();
-        return res
-            .status(200)
-            .json({
+        return res.status(200).json({
             success: true,
             message: shelf.isSystem
                 ? "Books moved to system shelf successfully"
@@ -196,6 +188,60 @@ export const removeFromLibrary = async (req, res) => {
         return res
             .status(500)
             .json({ success: false, message: "Internal Server Error" });
+    }
+};
+export const handleLibraryOverview = async (req, res) => {
+    try {
+        const user = req.User;
+        const shelfOverview = await db
+            .select({
+            id: shelves.id,
+            name: shelves.name,
+            isSystem: shelves.isSystem,
+            createdAt: shelves.createdAt,
+            bookCount: count(shelfBooks.id),
+        })
+            .from(shelves)
+            .leftJoin(shelfBooks, eq(shelves.id, shelfBooks.shelfId))
+            .where(eq(shelves.userId, user.id))
+            .groupBy(shelves.id, shelves.name, shelves.isSystem, shelves.createdAt)
+            .orderBy(desc(shelves.isSystem), asc(shelves.createdAt));
+        const recentlyAdded = await db.query.userBooks.findMany({
+            where: (userBooks, { eq }) => eq(userBooks.userId, user.id),
+            orderBy: (userBooks, { desc }) => desc(userBooks.createdAt),
+            limit: 6,
+            with: {
+                book: true,
+            },
+        });
+        const formattedShelves = shelfOverview.map((shelf) => ({
+            id: shelf.id,
+            name: shelf.name,
+            isSystem: shelf.isSystem,
+            bookCount: Number(shelf.bookCount),
+            createdAt: shelf.createdAt,
+        }));
+        return res.status(200).json({
+            success: true,
+            data: {
+                defaultShelves: formattedShelves.filter((shelf) => shelf.isSystem),
+                customShelves: formattedShelves.filter((shelf) => !shelf.isSystem),
+                recentlyAdded: recentlyAdded.map((item) => ({
+                    id: item.book.id,
+                    title: item.book.title,
+                    authors: item.book.authors,
+                    thumbnail: item.book.thumbnail,
+                    smallThumbnail: item.book.smallThumbnail,
+                })),
+            },
+        });
+    }
+    catch (err) {
+        console.log("Error in getting library overview: ", err);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
     }
 };
 //# sourceMappingURL=library.controller.js.map
