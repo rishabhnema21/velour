@@ -370,17 +370,20 @@ export function CreateShelfModal({
                 <div className="relative h-full w-full overflow-hidden rounded-sm">
                   {previewUrl ? (
                     // plain img tag — blob URLs don't work with Next.js Image
-                    <img
+                    <Image
                       src={previewUrl}
                       alt="Cover preview"
-                      className="absolute inset-0 h-full w-full object-cover"
+                      fill
+                      unoptimized
+                      className="object-cover"
                     />
                   ) : (
                     // default placeholder — same as ShelfCard's /placeholder.webp fallback
-                    <img
+                    <Image
                       src="/placeholder.webp"
                       alt="placeholder"
-                      className="absolute inset-0 h-full w-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                   )}
                 </div>

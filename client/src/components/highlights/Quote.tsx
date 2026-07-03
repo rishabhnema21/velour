@@ -120,7 +120,7 @@ const Quote = ({ highlight }: QuoteProps) => {
       )}
 
       <blockquote className="font-[serif] italic text-neutral-800 text-xl">
-        "{highlight.quote}"
+        &ldquo;{highlight.quote}&rdquo;
       </blockquote>
 
       {highlight.note && (

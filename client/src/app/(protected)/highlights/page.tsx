@@ -70,11 +70,11 @@ const Page = () => {
                 </h3>
                 
                 <p className="text-base leading-7 text-neutral-600 mb-8 max-w-lg font-[serif] italic">
-                  "A book is not just a container for ideas; it is a catalyst. What we preserve in the margins represents the quiet shifts in our own minds."
+                  &ldquo;A book is not just a container for ideas; it is a catalyst. What we preserve in the margins represents the quiet shifts in our own minds.&rdquo;
                 </p>
                 
                 <p className="text-sm leading-relaxed text-neutral-500 mb-10 max-w-md">
-                  You haven't saved any highlights yet. When you read something that changes your perspective, save it here. These quotes act as seeds for the AI-powered reflections layer.
+                  You haven&apos;t saved any highlights yet. When you read something that changes your perspective, save it here. These quotes act as seeds for the AI-powered reflections layer.
                 </p>
 
                 <div 

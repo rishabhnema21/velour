@@ -3,12 +3,8 @@ import { deleteShelf, renameShelf, shelfFetch } from "@/lib/apifetch/shelf";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-
-type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-  message?: string;
-};
+const getErrorMessage = (err: unknown) =>
+  err instanceof Error ? err.message : "Something went wrong";
 
 export const useShelf = (shelfId?: string) => {
   const { getToken } = useAuth();
@@ -60,11 +56,11 @@ export const useRenameShelf = () => {
       });
     },
 
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       showToast({
         type: "error",
         title: "Rename failed",
-        message: err?.message || "Something went wrong",
+        message: getErrorMessage(err),
       });
     },
   });
@@ -98,11 +94,11 @@ export const useDeleteShelf = () => {
       });
     },
 
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       showToast({
         type: "error",
         title: "Delete failed",
-        message: err?.message || "Something went wrong",
+        message: getErrorMessage(err),
       });
     },
   });

@@ -12,6 +12,7 @@ import { LuArrowLeft } from "react-icons/lu";
 const Page = () => {
   const { shelfId } = useParams<{ shelfId: string }>();
   const { data: shelf, isLoading, error } = useShelf(shelfId);
+  const errorMessage = error instanceof Error ? error.message : "Failed to load shelf.";
 
   if (!shelf) return null;
 
@@ -82,7 +83,7 @@ const Page = () => {
 
       {error && (
         <div className="mt-6 rounded-md bg-red-900/30 px-4 py-3 text-sm text-red-100">
-          {(error as any)?.message || "Failed to load shelf."}
+          {errorMessage}
         </div>
       )}
 

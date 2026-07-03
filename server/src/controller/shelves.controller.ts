@@ -1,8 +1,8 @@
-import { Request, Response, RequestHandler } from "express";
+import { eq } from "drizzle-orm";
+import { Request, RequestHandler, Response } from "express";
 import { db } from "../db";
-import type { ShelfParams } from "../types/params";
 import { shelves } from "../db/schema";
-import { and, eq } from "drizzle-orm";
+import type { ShelfParams } from "../types/params";
 
 export const getShelves = async (req: Request, res: Response) => {
   try {

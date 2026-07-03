@@ -42,7 +42,10 @@ export default function RenameShelfPopover({
 
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          setName(currentName);
+          setOpen((prev) => !prev);
+        }}
         className="rounded-md px-3 py-2 text-sm transition"
         style={{
           backgroundColor: "var(--velour-accent)",
@@ -94,7 +97,10 @@ export default function RenameShelfPopover({
             <div className="flex justify-end gap-2">
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setName(currentName);
+                  setOpen(false);
+                }}
                 className="rounded-md border px-3 py-2 text-sm"
                 style={{
                   borderColor: "var(--velour-border)",

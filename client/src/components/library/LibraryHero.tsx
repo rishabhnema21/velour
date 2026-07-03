@@ -1,5 +1,6 @@
 import type { LibraryOverview } from "@/hooks/useLibraryOverview";
 import Image from "next/image";
+import { formatBookCount } from "./libraryUtils";
 
 type LibraryHeroProps = {
   overview: LibraryOverview;
@@ -30,14 +31,14 @@ const LibraryHero = ({ overview, loading }: LibraryHeroProps) => {
           <blockquote className="text-neutral-200 mt-3">To understand yourself is the beginning of wisdom.</blockquote>
           <p className=" text-neutral-200 mr-4">— J. Krishnamurti</p>
         </div>
-        {/* <div className="mt-5 flex flex-wrap items-center gap-4 sm:mt-3 sm:gap-8">
-          <p className="text-sm text-neutral-200 md:text-base">
+      </div>
+      <div className="hidden md:block font-[urbanist] mt-5 absolute top-0 right-4 sm:mt-3">
+          <p className="text-sm text-neutral-200 md:text-base text-center">
             {loading
               ? "Loading your shelves..."
-              : `${formatBookCount(totalBooks)} across your system shelves`}
+              : <span className="text-xl text-white text-shadow-md">{formatBookCount(totalBooks)}</span>}
           </p>
-        </div> */}
-      </div>
+        </div>
     </section>
   );
 };

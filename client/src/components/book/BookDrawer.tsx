@@ -11,7 +11,7 @@ import Image from "next/image";
 const BookDrawer = () => {
   const { selectedBookId, closeDrawer, isOpen } = useBookDrawerStore();
 
-  const { data: book, isLoading } = useBook(selectedBookId ?? "");
+  const { data: book } = useBook(selectedBookId ?? "");
   const image = book?.smallThumbnail || "/placeholder.webp";
   const { data: libraryBooks } = useLibraryBooks();
   const { openModal } = useMoveModalStore();

@@ -16,31 +16,31 @@ export const validateFile = (file: File): string | null => {
 };
 
 export const uploadImageToCloudinary = async (file: File, token: string) => {
-const signRes = await axios.get(`${API_BASE}/api/upload/signature`, {
-    headers: { Authorization: `Bearer ${token}` }
-});
+  const signRes = await axios.get(`${API_BASE}/api/upload/signature`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-const { signature, timestamp, apiKey, cloudName, folder } = signRes.data.data;
+  const { signature, timestamp, apiKey, cloudName, folder } = signRes.data.data;
 
-const formData = new FormData();
-formData.append("file", file);
-formData.append("api_key", apiKey),
-formData.append("timestamp", timestamp.toString());
-formData.append("signature", signature)
-formData.append("folder", folder);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("api_key", apiKey);
+  formData.append("timestamp", timestamp.toString());
+  formData.append("signature", signature);
+  formData.append("folder", folder);
 
-const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
     method: "POST",
-    body: formData
-});
+    body: formData,
+  });
 
-const data = await res.json();
+  const data = await res.json();
 
-console.log("Cloudinary response:", data);
+  console.log("Cloudinary response:", data);
 
-if (!res.ok) {
-  throw new Error(data.error?.message || "Image upload failed");
-}
+  if (!res.ok) {
+    throw new Error(data.error?.message || "Image upload failed");
+  }
 
-return data.secure_url;
-}
+  return data.secure_url;
+};

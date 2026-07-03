@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { CiSearch } from "react-icons/ci";
 
 const SearchBar = () => {
   const router = useRouter();

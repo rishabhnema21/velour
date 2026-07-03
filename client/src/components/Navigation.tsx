@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import React from "react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   SignInButton,
   SignUpButton,

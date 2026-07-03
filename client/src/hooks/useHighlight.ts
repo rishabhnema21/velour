@@ -3,11 +3,8 @@ import { addHighlight, deleteHighlight, editHighlight, fetchHighlight } from "@/
 import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-  message?: string;
-};
+const getErrorMessage = (err: unknown) =>
+    err instanceof Error ? err.message : "Something went wrong";
 
 export const useAddHighlight = () => {
     const { getToken } = useAuth();
@@ -38,11 +35,11 @@ export const useAddHighlight = () => {
                 message: "Your highlight was added successfully",
             });
         },
-        onError: (err: any) => {
+        onError: (err: unknown) => {
             showToast({
                 type: "error",
                 title: "Add highlight failed",
-                message: err?.message || "Something went wrong",
+                message: getErrorMessage(err),
             });
         },
     });
@@ -92,11 +89,11 @@ export const useEditHighlight = () => {
       });
         },
 
-        onError: (err: any) => {
+        onError: (err: unknown) => {
       showToast({
         type: "error",
         title: "Edit failed",
-        message: err?.message || "Something went wrong",
+        message: getErrorMessage(err),
       });
     },
     })
@@ -113,7 +110,7 @@ export const useDeleteHighlight = () => {
             if (!token) throw new Error("You must be signed in to delete a highlight");
             return deleteHighlight(token, highlightId);
         },
-        onSuccess: (_, highlightId) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["highlights"]});
             showToast({
                 type: "success",
@@ -121,11 +118,11 @@ export const useDeleteHighlight = () => {
                 message: "Your highlight was deleted successfully",
             });
         },
-        onError: (err: any) => {
+        onError: (err: unknown) => {
             showToast({
                 type: "error",
                 title: "Delete failed",
-                message: err?.message || "Something went wrong",
+                message: getErrorMessage(err),
             })
         }
 

@@ -4,6 +4,9 @@ import { addBookToLibrary, getLibraryBooks } from "@/lib/apifetch/library";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+const getErrorMessage = (err: unknown) =>
+  err instanceof Error ? err.message : "Something went wrong";
+
 export const useAddToLibrary = () => {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
@@ -27,11 +30,11 @@ export const useAddToLibrary = () => {
       });
     },
 
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       showToast({
         type: "error",
         title: "Add to Library failed",
-        message: err?.message || "Something went wrong",
+        message: getErrorMessage(err),
       });
     },
   });
@@ -51,7 +54,7 @@ export const useLibrary = () => {
 };
 
 export const useMoveBooks = () => {
-  const { getToken, isLoaded, isSignedIn } = useAuth();
+  const { getToken } = useAuth();
   const queryClient = useQueryClient();
   const { showToast } = useToast();
 
@@ -66,7 +69,7 @@ export const useMoveBooks = () => {
       const token = await getToken();
       return moveBook(userBookId, shelfId, token ?? undefined);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["library", "overview"] });
       queryClient.invalidateQueries({ queryKey: ["library", "books"] });
       queryClient.invalidateQueries({ queryKey: ["shelf"] });

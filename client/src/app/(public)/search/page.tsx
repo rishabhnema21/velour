@@ -7,8 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo } from "react";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-
 const SearchContent = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("q")?.trim() || "";

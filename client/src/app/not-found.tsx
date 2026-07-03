@@ -9,11 +9,11 @@ export default function NotFound() {
         <h1 className="text-9xl font-bold tracking-tighter">404</h1>
 
       <h2 className="mt-4 text-3xl font-semibold">
-        This page doesn't exist.
+        This page doesn&apos;t exist.
       </h2>
 
       <p className="mt-3 max-w-md text-center text-gray-600">
-        The page you're looking for may have wandered somewhere else.
+        The page you&apos;re looking for may have wandered somewhere else.
       </p>
 
       <Link

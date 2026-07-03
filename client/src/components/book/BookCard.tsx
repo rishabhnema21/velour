@@ -5,7 +5,6 @@ import { useHighlightModalStore } from "@/store/HighlightModalStore";
 import { useMoveModalStore } from "@/store/MoveModalStore";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 type BookCardProps = {
   id: string;
@@ -25,7 +24,6 @@ const BookCard = ({
   userBookId,
   currentShelfIds,
 }: BookCardProps) => {
-  const router = useRouter();
   const { openDrawer } = useBookDrawerStore();
   const { openModal } = useMoveModalStore();
   const { openCreateModal: openHighlightModal } = useHighlightModalStore();

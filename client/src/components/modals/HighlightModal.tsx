@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useHighlightModalStore } from "@/store/HighlightModalStore";
 
@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAddHighlight, useEditHighlight } from "@/hooks/useHighlight";
+import type { Highlight } from "@/lib/apifetch/highlight";
 
 type HighlightForm = {
   quote: string;
@@ -29,24 +30,63 @@ const initialForm: HighlightForm = {
 
 const HighlightModal = () => {
   const { isOpen, mode, userBookId, editingHighlight, closeModal } = useHighlightModalStore();
+
+  const formKey = mode === "edit" && editingHighlight
+    ? `edit-${editingHighlight.id}-${isOpen}`
+    : `create-${userBookId ?? "none"}-${isOpen}`;
+
+  return (
+    <Modal
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) closeModal();
+      }}
+    >
+      <HighlightModalForm
+        key={formKey}
+        mode={mode}
+        userBookId={userBookId}
+        editingHighlight={editingHighlight}
+        closeModal={closeModal}
+      />
+    </Modal>
+  );
+};
+
+type HighlightModalFormProps = {
+  mode: "create" | "edit";
+  userBookId: string | null;
+  editingHighlight: Highlight | null;
+  closeModal: () => void;
+};
+
+const getInitialForm = (
+  mode: HighlightModalFormProps["mode"],
+  editingHighlight: HighlightModalFormProps["editingHighlight"],
+): HighlightForm => {
+  if (mode !== "edit" || !editingHighlight) return initialForm;
+
+  return {
+    quote: editingHighlight.quote,
+    note: editingHighlight.note ?? "",
+    pageNumber: editingHighlight.pageNumber?.toString() ?? "",
+  };
+};
+
+const HighlightModalForm = ({
+  mode,
+  userBookId,
+  editingHighlight,
+  closeModal,
+}: HighlightModalFormProps) => {
   const { isPending: isAdding, mutate: addMutate } = useAddHighlight();
   const { isPending: isEditing, mutate: editMutate } = useEditHighlight();
 
   const isPending = isAdding || isEditing;
 
-  const [form, setForm] = useState<HighlightForm>(initialForm);
-
-  useEffect(() => {
-    if (mode === "edit" && editingHighlight) {
-      setForm({
-        quote: editingHighlight.quote,
-        note: editingHighlight.note ?? "",
-        pageNumber: editingHighlight.pageNumber?.toString() ?? "",
-      });
-    } else if (isOpen) {
-      setForm(initialForm);
-    }
-  }, [mode, editingHighlight, isOpen]);
+  const [form, setForm] = useState<HighlightForm>(() =>
+    getInitialForm(mode, editingHighlight),
+  );
 
   const updateField = (field: keyof HighlightForm, value: string) => {
     setForm((prev) => ({
@@ -88,12 +128,6 @@ const HighlightModal = () => {
   };
 
   return (
-    <Modal
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (!open) handleClose();
-      }}
-    >
       <ModalContent className="sm:max-w-lg bg-neutral-200">
         <form onSubmit={handleSubmit}>
           <ModalHeader className="flex flex-row items-center justify-between">
@@ -158,7 +192,6 @@ const HighlightModal = () => {
           </ModalFooter>
         </form>
       </ModalContent>
-    </Modal>
   );
 };
 

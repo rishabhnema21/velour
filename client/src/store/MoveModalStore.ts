@@ -13,7 +13,7 @@ export const useMoveModalStore = create<MoveModalState>((set) => ({
   isOpen: false,
   userBookId: null,
   currentShelfIds: [],
-  setOpen: (open) => set({isOpen: true}),
+  setOpen: (open) => set({isOpen: open}),
   openModal: (userBookId, currentShelfIds) => set({isOpen: true, userBookId, currentShelfIds}),
   closeModal: () => set({isOpen: false, userBookId: null, currentShelfIds: []}),
 }));
