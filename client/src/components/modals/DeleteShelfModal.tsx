@@ -58,11 +58,11 @@ export default function DeleteShelfModal({
         <ModalHeader>
           <ModalTitle><span className="text-neutral-800 font-[urbanist]">Delete Shelf</span></ModalTitle>
           <ModalDescription>
-            <p className="font-medium text-neutral-800 font-[urbanist]">Are you sure you want to delete{" "}
+            <span className="font-medium text-neutral-800 font-[urbanist]">Are you sure you want to delete{" "}
             <span className="">
               {shelfName || "this shelf"}
             </span>
-            ? This action cannot be undone.</p>
+            ? This action cannot be undone.</span>
           </ModalDescription>
         </ModalHeader>
 

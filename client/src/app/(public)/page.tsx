@@ -10,6 +10,9 @@ const Home = async () => {
     <div className='bg-[#fdfcfb] min-h-screen w-full pt-20 overflow-hidden'>
       <Hero />
       {/* <Features /> */}
+      <div className='py-5'>
+        <h4 className='text-center italic font-[serif] text-xl'>Work in Progress</h4>
+      </div>
     </div>
   )
 }
