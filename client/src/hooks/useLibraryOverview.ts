@@ -12,6 +12,7 @@ export type LibraryShelf = {
   name: string;
   isSystem: boolean;
   bookCount: number;
+  coverImage?: string | null;
   createdAt: string;
 };
 

@@ -5,6 +5,7 @@ export const shelves = pgTable("shelves", {
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id").references(() => users.id, {onDelete: "cascade"}).notNull(),
     name: text("name").notNull(),
+    coverImage: text("cover_image"),
     isSystem: boolean("is_system").notNull().default(false),
     createdAt: timestamp("created_at", {withTimezone: true}).defaultNow().notNull(),
 }, (table) => {

@@ -16,6 +16,7 @@
     "@clerk/express": "^1.7.73",
     "@neondatabase/serverless": "^1.0.2",
     "axios": "^1.13.5",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",

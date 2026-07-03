@@ -57,7 +57,7 @@ const ShelfCard = ({ shelf }: ShelfCardProps) => {
       <div className="flex items-start h-full justify-between gap-4">
         <div className="relative h-full w-full overflow-hidden rounded-sm">
           <Image
-            src="/placeholder.webp"
+            src={shelf.coverImage || "/placeholder.webp"}
             alt="placeholder"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -71,7 +71,7 @@ const ShelfCard = ({ shelf }: ShelfCardProps) => {
         </p>
       </div>
       <div className="mt-5 absolute bottom-3 left-3">
-        <h3 className="font-semibold text-3xl w-[95%] text-white">{shelfName}</h3>
+        <h3 className="font-semibold text-shadow-md text-3xl w-[95%] text-white">{shelfName}</h3>
       </div>
     </Link>
   );

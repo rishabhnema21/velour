@@ -254,6 +254,7 @@ export const handleLibraryOverview = async (req: Request, res: Response) => {
         name: shelves.name,
         isSystem: shelves.isSystem,
         createdAt: shelves.createdAt,
+        coverImage: shelves.coverImage,
         bookCount: count(shelfBooks.id),
       })
       .from(shelves)
@@ -276,6 +277,7 @@ export const handleLibraryOverview = async (req: Request, res: Response) => {
       name: shelf.name,
       isSystem: shelf.isSystem,
       bookCount: Number(shelf.bookCount),
+      coverImage: shelf.coverImage,
       createdAt: shelf.createdAt,
     }));
 

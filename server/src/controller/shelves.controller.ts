@@ -94,6 +94,7 @@ export const createCustomShelves = async (req: Request, res: Response) => {
   const user = req.User;
   try {
     const name = req.body.name?.trim();
+    const {coverImage} = req.body;
 
     if (!name || name.length < 2) {
       return res.status(400).json({
@@ -107,6 +108,7 @@ export const createCustomShelves = async (req: Request, res: Response) => {
       .values({
         name,
         userId: user.id,
+        coverImage,
       })
       .returning();
     return res.status(201).json({

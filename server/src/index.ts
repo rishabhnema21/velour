@@ -7,6 +7,7 @@ import bookRoutes from "./routes/book.routes";
 import libraryRoutes from "./routes/library.route";
 import shelvesRoutes from "./routes/shelves.route";
 import highlightRoutes from "./routes/highlight.route";
+import uploadRoutes from "./routes/upload.route";
 
 const app = express();
 app.use(cors({
@@ -25,6 +26,7 @@ app.use("/api/books", bookRoutes);
 app.use("/api/library", libraryRoutes);
 app.use("/api/shelves", shelvesRoutes);
 app.use("/api/highlights", highlightRoutes);
+app.use("/api/upload", uploadRoutes);
 
 
 app.listen(config.port, () => {
