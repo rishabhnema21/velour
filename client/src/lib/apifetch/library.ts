@@ -1,5 +1,5 @@
-import axios from "axios";
 import { UserBook } from "@/types/book";
+import axios from "axios";
 
 type ApiResponse<T> = {
   success: boolean;
@@ -7,7 +7,7 @@ type ApiResponse<T> = {
   message?: string;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export const addBookToLibrary = async (
   bookId: string,

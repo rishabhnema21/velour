@@ -1,6 +1,5 @@
-import Hero from '@/components/sections/home/Hero'
+import Hero from '@/components/sections/home/Hero';
 import { auth } from "@clerk/nextjs/server";
-import Image from 'next/image';
 import { redirect } from "next/navigation";
 
 const Home = async () => {

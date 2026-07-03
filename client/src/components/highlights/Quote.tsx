@@ -1,11 +1,11 @@
 "use client";
 
+import { useDeleteHighlight } from "@/hooks/useHighlight";
 import { Highlight } from "@/lib/apifetch/highlight";
+import { useHighlightModalStore } from "@/store/HighlightModalStore";
+import { Pencil, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { VscKebabVertical } from "react-icons/vsc";
-import { Pencil, Trash2, X } from "lucide-react";
-import { useHighlightModalStore } from "@/store/HighlightModalStore";
-import { useDeleteHighlight } from "@/hooks/useHighlight";
 
 type QuoteProps = {
   highlight: Highlight;

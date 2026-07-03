@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { RecentlyAddedBook } from "@/hooks/useLibraryOverview";
+import Image from "next/image";
 import { getBookCover } from "./libraryUtils";
 
 type RecentlyAddedBooksProps = {

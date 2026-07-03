@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { useRenameShelf } from "@/hooks/useShelfWithBooks";
+import { X } from "lucide-react";
+import { useState } from "react";
 
 type Props = {
   shelfId: string;

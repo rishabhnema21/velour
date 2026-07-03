@@ -1,6 +1,5 @@
-import Image from "next/image";
 import type { LibraryOverview } from "@/hooks/useLibraryOverview";
-import { formatBookCount, getBookCover } from "./libraryUtils";
+import Image from "next/image";
 
 type LibraryHeroProps = {
   overview: LibraryOverview;

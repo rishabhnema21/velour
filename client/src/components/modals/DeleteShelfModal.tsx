@@ -1,20 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import {
   Modal,
-  ModalTrigger,
+  ModalClose,
   ModalContent,
-  ModalHeader,
-  ModalTitle,
   ModalDescription,
   ModalFooter,
-  ModalClose,
-  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalTrigger
 } from "@/components/modal";
-import { Trash } from "lucide-react";
 import { useDeleteShelf } from "@/hooks/useShelfWithBooks";
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type Props = {
   shelfId: string;

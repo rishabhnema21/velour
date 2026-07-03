@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Urbanist, Inter, Instrument_Serif } from "next/font/google";
-import "./globals.css";
-import Navigation from "@/components/Navigation";
-import { ClerkProvider } from "@clerk/nextjs";
-import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/components/notifications/ToastProvider";
+import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
-import BookDrawer from "@/components/book/BookDrawer";
+import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono, Instrument_Serif, Inter, Urbanist } from "next/font/google";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 

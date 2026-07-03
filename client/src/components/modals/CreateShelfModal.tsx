@@ -1,17 +1,16 @@
 "use client";
 
-import { Modal, ModalContent } from "@/components/modal";
+import { useToast } from "@/components/notifications/ToastProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/notifications/ToastProvider";
+import { uploadImageToCloudinary, validateFile } from "@/lib/upload";
 import { useAuth } from "@clerk/nextjs";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { X, UploadCloud, ImageIcon } from "lucide-react";
+import { UploadCloud, X } from "lucide-react";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { uploadImageToCloudinary, validateFile } from "@/lib/upload";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 

@@ -1,12 +1,12 @@
 "use client";
 
 import { useBookDrawerStore } from "@/store/BookDrawerStore";
+import { useHighlightModalStore } from "@/store/HighlightModalStore";
+import { useMoveModalStore } from "@/store/MoveModalStore";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useMoveModalStore } from "@/store/MoveModalStore";
-import { useHighlightModalStore } from "@/store/HighlightModalStore";
 type BookCardProps = {
   id: string;
   cover: string;

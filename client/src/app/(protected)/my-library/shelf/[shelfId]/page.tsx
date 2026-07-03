@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
-import { useShelf } from "@/hooks/useShelfWithBooks";
-import { useParams } from "next/navigation";
 import BookCard from "@/components/book/BookCard";
-import { LuArrowLeft } from "react-icons/lu";
-import Link from "next/link";
-import RenameShelfPopover from "@/components/sections/shelfs/RenamePop";
 import DeleteShelfModal from "@/components/modals/DeleteShelfModal";
 import MoveBookModal from "@/components/modals/MoveBookModal";
+import RenameShelfPopover from "@/components/sections/shelfs/RenamePop";
+import { useShelf } from "@/hooks/useShelfWithBooks";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { LuArrowLeft } from "react-icons/lu";
 
 const Page = () => {
   const { shelfId } = useParams<{ shelfId: string }>();

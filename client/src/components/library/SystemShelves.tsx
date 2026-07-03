@@ -1,5 +1,5 @@
-import { CiEdit } from "react-icons/ci";
 import type { LibraryShelf } from "@/hooks/useLibraryOverview";
+import { CiEdit } from "react-icons/ci";
 import ShelfCard from "./ShelfCard";
 
 type SystemShelvesProps = {

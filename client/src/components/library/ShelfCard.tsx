@@ -1,13 +1,13 @@
 "use client";
 
+import type { LibraryShelf } from "@/hooks/useLibraryOverview";
+import Image from "next/image";
 import Link from "next/link";
+import type { IconType } from "react-icons";
 import { CiCircleCheck } from "react-icons/ci";
 import { IoBookOutline } from "react-icons/io5";
 import { LuHourglass, LuX } from "react-icons/lu";
-import type { IconType } from "react-icons";
-import type { LibraryShelf } from "@/hooks/useLibraryOverview";
 import { formatBookCount, formatShelfName } from "./libraryUtils";
-import Image from "next/image";
 
 const systemShelfStyles: Record<string, { icon: IconType; tone: string }> = {
   "CURRENTLY READING": {

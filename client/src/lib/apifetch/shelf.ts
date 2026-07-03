@@ -1,5 +1,5 @@
+import { Shelf } from "@/types/book";
 import axios from "axios";
-import { Shelf, ShelfBook, UserBook, Book } from "@/types/book";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 

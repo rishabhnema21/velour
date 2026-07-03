@@ -5,11 +5,10 @@ import { useHighlightModalStore } from "@/store/HighlightModalStore";
 import {
   Modal,
   ModalBody,
-  ModalClose,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalTitle,
+  ModalTitle
 } from "../modal";
 
 import { Button } from "@/components/ui/button";

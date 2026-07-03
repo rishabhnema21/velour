@@ -6,7 +6,7 @@ import { useFetchHighlight } from "@/hooks/useHighlight";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import { RiDoubleQuotesL } from "react-icons/ri";
 
-const page = () => {
+const Page = () => {
   const { data: quotes, isLoading } = useFetchHighlight();
 
   return (
@@ -108,4 +108,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

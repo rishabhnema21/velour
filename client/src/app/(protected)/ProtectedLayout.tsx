@@ -1,18 +1,17 @@
 "use client";
 
+import BookDrawer from "@/components/book/BookDrawer";
+import Logo from "@/components/Logo";
+import HighlightModal from "@/components/modals/HighlightModal";
+import SearchBar from "@/components/SearchBar";
+import { useAuth, useClerk, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth, useClerk } from "@clerk/nextjs";
-import { UserButton } from "@clerk/nextjs";
 import React, { useEffect, useRef } from "react";
 import { CiBookmark, CiCompass1, CiLogout, CiSettings } from "react-icons/ci";
 import { FaRegChartBar } from "react-icons/fa";
 import { IoBookOutline } from "react-icons/io5";
 import { RiDoubleQuotesL } from "react-icons/ri";
-import BookDrawer from "@/components/book/BookDrawer";
-import Logo from "@/components/Logo";
-import SearchBar from "@/components/SearchBar";
-import HighlightModal from "@/components/modals/HighlightModal";
 
 const navItems = [
   { label: "Library", href: "/my-library", icon: IoBookOutline },

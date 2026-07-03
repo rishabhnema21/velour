@@ -1,4 +1,4 @@
-const page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
   return (
     <div className="h-screen w-screen">
@@ -7,4 +7,4 @@ const page = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Page;

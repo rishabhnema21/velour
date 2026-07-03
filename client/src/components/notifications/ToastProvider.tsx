@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckCircle2, CircleAlert, X } from "lucide-react";
 import {
   createContext,
   useCallback,
@@ -8,7 +9,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { CheckCircle2, CircleAlert, X } from "lucide-react";
 
 type ToastType = "success" | "error";
 
